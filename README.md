@@ -6,6 +6,7 @@ This project aim to create the mobile application for our MobleHCI 2022 project.
 ### Built With
 
 * [Android Studio][android-studio]
+* [Java][java]
 
 ### Installation
 
@@ -23,6 +24,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [android-studio]: https://developer.android.com/studio
+[java]: https://www.java.com/en/
 
 
 
