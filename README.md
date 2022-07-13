@@ -25,7 +25,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information
 
 ## Contributors 
 
-* Happy Ta (tal@wit.edu) 
+* Happy Ta (lam.happy.ta@gmail.com)
 * Sarah Mahmoud (mahmouds@wit.edu)
 * Aimane Mahtar (mahtara@wit.edu)
 
