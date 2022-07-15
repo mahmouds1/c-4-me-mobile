@@ -1,4 +1,4 @@
-package edu.wit.mobileapp.c_4_u_me_mobile;
+package edu.wit.mobileapp.c_4_me_mobile;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -11,7 +11,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import edu.wit.mobileapp.c_4_u_me_mobile.databinding.ActivityMapsBinding;
+import edu.wit.mobileapp.c_4_me_mobile.databinding.ActivityMapsBinding;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 

@@ -54,12 +54,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".MyNavigationService"
-            android:foregroundServiceType="location">
-
-            <!-- Any inner elements would go here. -->
-        </service>
     </application>
 
 </manifest>
