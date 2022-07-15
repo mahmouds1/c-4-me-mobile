@@ -6,7 +6,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "edu.wit.mobileapp.c_4_u_me_mobile"
+        applicationId "edu.wit.mobileapp.c_4_me_mobile"
         minSdk 27
         targetSdk 32
         versionCode 1

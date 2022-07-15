@@ -1,4 +1,4 @@
-package edu.wit.mobileapp.c_4_u_me_mobile;
+package edu.wit.mobileapp.c_4_me_mobile;
 
 import android.content.Context;
 
