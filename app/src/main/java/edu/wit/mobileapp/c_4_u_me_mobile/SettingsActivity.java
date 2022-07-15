@@ -15,7 +15,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_page_xml);
+        setContentView(R.layout.settings_activity);
 
         Log.v(TAG, "onCreate() is called");
 
@@ -23,6 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
         Button homeBtn = (Button) findViewById(R.id.settingsSwitchButton);
 
         //do we need this??
+        /*
         homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivity(homeIntent);
 
             }
-        });
+        });*/
 
     }
 

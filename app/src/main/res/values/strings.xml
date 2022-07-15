@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">c-4-u-me-mobile</string>
+    <string name="app_name">c-4-u-mobile</string>
+
+    //homepage button titles
+    <string name="notesTitle">Notes</string>
+    <string name="mapsTitle">Maps</string>
+    <string name="connectivityTitle">Connectivity</string>
+    <string name="settingsTitle">Settings</string>
 </resources>

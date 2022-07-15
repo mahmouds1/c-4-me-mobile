@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="270dp"
         android:layout_height="105dp"
-        android:text="i work"
+        android:text="i work -settings page"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
