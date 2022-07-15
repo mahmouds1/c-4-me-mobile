@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">c-4-me-mobile</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    //homepage button titles
+    <string name="notesTitle">Notes</string>
+    <string name="mapsTitle">Maps</string>
+    <string name="connectivityTitle">Connectivity</string>
+    <string name="settingsTitle">Settings</string>
 </resources>
