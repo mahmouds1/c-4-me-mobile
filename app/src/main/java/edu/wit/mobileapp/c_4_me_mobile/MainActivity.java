@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //notes activity switch button listener
-        mapsBtn.setOnClickListener(new View.OnClickListener() {
+        notesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.v(TAG, "notes button clicked");
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //connectivity activity switch button listener
-        mapsBtn.setOnClickListener(new View.OnClickListener() {
+        connectivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.v(TAG, "connectivity button clicked");
