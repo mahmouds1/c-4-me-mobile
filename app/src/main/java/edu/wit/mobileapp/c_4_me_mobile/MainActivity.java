@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
                 startActivity(notesIntent);
             }
-        });//end of mapsBtn listener
+        });//end of notesBtn listener
 
         //maps activity switch button listener
         mapsBtn.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
                 startActivity(connectivityIntent);
             }
-        });//end of mapsBtn listener
+        });//end of connectivityBtn listener
 
 
         //settings activity switch button listener
