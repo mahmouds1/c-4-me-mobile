@@ -9,10 +9,11 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-    <!-- Permissions related to map activity -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" /> <!-- Permissions related to map activity -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
 
     <application
         android:allowBackup="true"
@@ -24,7 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.C4umemobile"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ConnectivityActivity"
+            android:exported="false" />
         <!--
              DONE, keeping this just in case i did a stupid and forget
 
@@ -42,14 +45,14 @@
 
         <activity
             android:name=".SettingsActivity"
-            android:exported="false" 
+            android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".MapsActivity"
             android:exported="false"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name="edu.wit.mobileapp.c_4_me_mobile.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,7 +60,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

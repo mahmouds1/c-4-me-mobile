@@ -8,4 +8,9 @@
     <string name="mapsTitle">Maps</string>
     <string name="connectivityTitle">Connectivity</string>
     <string name="settingsTitle">Settings</string>
+
+
+    // connectivity set up
+    <string name="connect">Connect</string>
+    <string name="Scan">Scan</string>
 </resources>
