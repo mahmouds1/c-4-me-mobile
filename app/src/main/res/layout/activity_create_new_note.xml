@@ -85,9 +85,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:inputType="text"
+        android:inputType="text|textMultiLine"
         android:hint="Enter Note"
         android:layout_below="@+id/create_note_content_view"
         android:layout_marginTop="10dp"
-        android:autofillHints="Date" />
+        android:autofillHints="Note content" />
 </RelativeLayout>

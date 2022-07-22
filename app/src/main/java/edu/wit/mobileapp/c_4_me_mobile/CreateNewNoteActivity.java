@@ -56,6 +56,9 @@ public class CreateNewNoteActivity extends AppCompatActivity {
                 if (insertNewNoteData) {
                     // Success!
                     Toast.makeText(CreateNewNoteActivity.this, "Note successfully created!", Toast.LENGTH_SHORT).show();
+                    Intent goBackIntent = new Intent();
+                    goBackIntent.setClass(CreateNewNoteActivity.this, NotesActivity.class);
+                    startActivity(goBackIntent);
                 } else {
                     // Failure!
                     Toast.makeText(CreateNewNoteActivity.this, "Error: note not created!", Toast.LENGTH_SHORT).show();
