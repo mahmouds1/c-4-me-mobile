@@ -3,6 +3,7 @@ package edu.wit.mobileapp.c_4_me_mobile;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,12 +27,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Setting map option
         GoogleMapOptions options = new GoogleMapOptions();
         options.mapType(GoogleMap.MAP_TYPE_NORMAL)
-                .compassEnabled(true)
-                .rotateGesturesEnabled(true)
-                .tiltGesturesEnabled(true)
-                ;
+                .zoomControlsEnabled(true);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = SupportMapFragment.newInstance(options);
@@ -39,6 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .beginTransaction()
                 .add(R.id.map, mapFragment)
                 .commit();
+
 
 //        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
 //                .findFragmentById(R.id.map);
@@ -58,6 +58,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+
+        Log.v("myMap", "isCompassEnabled: " + mMap.getUiSettings().isCompassEnabled());
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
