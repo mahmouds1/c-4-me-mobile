@@ -25,17 +25,6 @@ public class DateHelper {
         return true;
     }
 
-    public Date getDateFromInput(String dateString) {
-        Date date = null;
-        DateFormat dtf = new SimpleDateFormat("MM/dd/yyyy");
-        try {
-            date = dtf.parse(dateString);
-            return date;
-        } catch (ParseException e) {
-            return null;
-        }
-    }
-
     public Long getUnixTimestampDateFromInput(String dateString) {
         Date date = null;
         DateFormat dtf = new SimpleDateFormat("MM/dd/yyyy");
