@@ -15,7 +15,7 @@ public class NotesDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create Table Notes(title TEXT primary key, date TEXT, note TEXT)");
+        db.execSQL("create Table Notes(title TEXT primary key, date INTEGER, note TEXT)");
     }
 
     @Override
@@ -26,15 +26,15 @@ public class NotesDBHelper extends SQLiteOpenHelper {
     /**
      * Inserts a new note into the Notes database
      * @param title title of note
-     * @param date date of note
+     * @param dateTimestamp timestamp of note (long)
      * @param content note content
      * @return true if success, else false
      */
-    public Boolean insertNewNote(String title, String date, String content) {
+    public Boolean insertNewNote(String title, Long dateTimestamp, String content) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", title);
-        contentValues.put("date", date);
+        contentValues.put("date", dateTimestamp);
         contentValues.put("note", content);
         long results = db.insert("Notes", null, contentValues);
         return results != -1;
@@ -43,18 +43,18 @@ public class NotesDBHelper extends SQLiteOpenHelper {
     /**
      * Updates the date and content an existing note from the Notes database
      * @param title title of note
-     * @param date date of note
+     * @param dateTimestamp timestamp of note (long)
      * @param content note content
      * @return true if success, else false
      */
-    public Boolean updateExistingNote(String title, String date, String content) {
+    public Boolean updateExistingNote(String title, Long dateTimestamp, String content) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("date", date);
+        contentValues.put("date", dateTimestamp);
         contentValues.put("note", content);
 
         String[] titleQuery = { title };
-        Cursor cursor = db.rawQuery("Select * from Notes where name = ?", titleQuery);
+        Cursor cursor = db.rawQuery("Select * from Notes where title = ?", titleQuery);
         if (cursor.getCount() > 0) {
             long results = db.update("Notes", contentValues, "title=?", titleQuery);
             return results != -1;
@@ -63,11 +63,12 @@ public class NotesDBHelper extends SQLiteOpenHelper {
         }
     }
 
-    /**
+    /*
      * Deletes an existing note from the Notes database
      * @param title title of note
      * @return true if success, else false
-     */
+
+    CURRENTLY COMMENTED OUT UNTIL USAGE
     public Boolean deleteExistingNote(String title) {
         SQLiteDatabase db = this.getWritableDatabase();
         String[] titleQuery = { title };
@@ -79,17 +80,19 @@ public class NotesDBHelper extends SQLiteOpenHelper {
             return false;
         }
     }
+    */
 
-    /**
+    /*
      * Gets an existing note from the Notes database
      * @param title title of note
      * @return note data
-     */
+
     public Cursor getExistingNote(String title) {
         SQLiteDatabase db = this.getWritableDatabase();
         String[] titleQuery = { title };
         return db.rawQuery("Select * from Notes where title = ?", titleQuery);
     }
+    */
 
     /**
      * Gets ALL existing notes from the Notes database

@@ -35,6 +35,7 @@ public class NoteListItemAdapter extends ArrayAdapter<NoteListItem> {
         TextView note_content;
         note_content = (TextView) view.findViewById(R.id.note_item_content);
         note_content.setText(item.note_content);
+
         return view;
     }
 }

@@ -29,6 +29,14 @@
             android:name=".CreateNewNoteActivity"
             android:exported="false"
             android:label="@string/title_activity_create_new_note" />
+        <activity
+            android:name=".ViewNoteActivity"
+            android:exported="false"
+            android:label="View Note" />
+        <activity
+            android:name=".EditNoteActivity"
+            android:exported="false"
+            android:label="Edit Note" />
         <!--
              DONE, keeping this just in case i did a stupid and forget
 

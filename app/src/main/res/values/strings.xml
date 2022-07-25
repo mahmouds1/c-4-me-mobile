@@ -22,4 +22,10 @@
     <string name="create_note_title_view">Title</string>
     <string name="create_note_date_view">Date</string>
     <string name="create_note_content_view">Content</string>
+
+    // View note activity related
+    <string name="edit_note_btn_text">Edit Note</string>
+
+    // Edit note activity related
+    <string name="edit_note_submit_btn_text">Submit Changes</string>
 </resources>

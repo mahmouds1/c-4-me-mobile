@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -25,10 +26,11 @@ public class NotesActivity extends AppCompatActivity {
         Cursor notes = db.getAllNotes();
 
         // Build note data into array of objects
+        DateHelper dh = new DateHelper();
         List<NoteListItem> notesList = new ArrayList<>();
         while (notes.moveToNext()) {
             String newTitle = notes.getString(0);
-            String newDate = notes.getString(1);
+            String newDate = dh.getDateStringFromTimestamp(notes.getLong(1));
             String newContent = notes.getString(2);
             notesList.add(new NoteListItem(newTitle, newDate, newContent));
         }
@@ -37,6 +39,25 @@ public class NotesActivity extends AppCompatActivity {
         NoteListItemAdapter adapter = new NoteListItemAdapter(this, 0, notesList);
         ListView listOfNotes = (ListView) findViewById(R.id.notes_list_view);
         listOfNotes.setAdapter(adapter);
+
+        // OnClick listener for each note item in the list
+        listOfNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent viewNoteIntent = new Intent();
+                viewNoteIntent.setClass(NotesActivity.this, ViewNoteActivity.class);
+
+                NoteListItem item = (NoteListItem) parent.getItemAtPosition(position);
+
+                Bundle viewNoteBundle = new Bundle();
+                viewNoteBundle.putString("currentTitle", item.title);
+                viewNoteBundle.putString("currentDate", item.date);
+                viewNoteBundle.putString("currentContent", item.note_content);
+
+                viewNoteIntent.putExtras(viewNoteBundle);
+                startActivity(viewNoteIntent);
+            }
+        });
 
         // New Note Button
         Button newNoteBtn = (Button) findViewById(R.id.create_new_note_button);
@@ -50,7 +71,6 @@ public class NotesActivity extends AppCompatActivity {
                 // intent for activity switch
                 Intent notesIntent = new Intent();
                 notesIntent.setClass(NotesActivity.this, CreateNewNoteActivity.class);
-
                 startActivity(notesIntent);
             }
         });//end of newNoteBtn listener

@@ -42,6 +42,7 @@ public class CreateNewNoteActivity extends AppCompatActivity {
                 Log.v("myApp", "Create Note Button Clicked");
 
                 NotesDBHelper db = new NotesDBHelper(CreateNewNoteActivity.this);
+                DateHelper dh = new DateHelper();
 
                 EditText title, date, content;
                 title = (EditText) findViewById(R.id.create_note_title_field);
@@ -52,7 +53,17 @@ public class CreateNewNoteActivity extends AppCompatActivity {
                 String dateText = date.getText().toString();
                 String contentText = content.getText().toString();
 
-                Boolean insertNewNoteData = db.insertNewNote(titleText, dateText, contentText);
+                // Check if dateText is valid date, and get timestamp from it
+                Long timestamp = null;
+                if (dh.isValidDateInput(dateText)) {
+                    timestamp = dh.getUnixTimestampDateFromInput(dateText);
+                } else {
+                    // Error timestamp
+                    Toast.makeText(CreateNewNoteActivity.this, "Please enter a correct date (mm/dd/yyyy)!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Boolean insertNewNoteData = db.insertNewNote(titleText, timestamp, contentText);
                 if (insertNewNoteData) {
                     // Success!
                     Toast.makeText(CreateNewNoteActivity.this, "Note successfully created!", Toast.LENGTH_SHORT).show();
