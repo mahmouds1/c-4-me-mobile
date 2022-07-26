@@ -10,17 +10,25 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
 
 import edu.wit.mobileapp.c_4_me_mobile.R;
 import edu.wit.mobileapp.c_4_me_mobile.databinding.ActivityMapsBinding;
@@ -38,18 +46,17 @@ public class MapsActivity extends AppCompatActivity implements
      * #onRequestPermissionsResult(int, String[], int[])}.
      */
     private boolean permissionDenied = false;
-
+    private FusedLocationProviderClient mFusedLocationClient;
+    LocationRequest mLocationRequest;
+    Location mLastLocation;
     private GoogleMap mMap;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_maps);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Setting map option
         GoogleMapOptions options = new GoogleMapOptions();
@@ -66,6 +73,27 @@ public class MapsActivity extends AppCompatActivity implements
         mapFragment.getMapAsync(this);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        Log.v("myMap", "App is paused");
+        //stop location updates when Activity is no longer active
+        if (mFusedLocationClient != null) {
+            mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+        }
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        if (permissionDenied) {
+            // Permission was not granted, display error dialog.
+            showMissingPermissionError();
+            permissionDenied = false;
+        }
+    }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -79,20 +107,38 @@ public class MapsActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(60000); // 1 minute interval
+        mLocationRequest.setFastestInterval(120000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+        // Location Permission check
         enableMyLocation();
 
-
-
-
-        Log.v("myMap", "isCompassEnabled: " + mMap.getUiSettings().isCompassEnabled());
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
+
+    LocationCallback mLocationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            List<Location> locationList = locationResult.getLocations();
+            if (locationList.size() > 0) {
+                //The last location in the list is the newest
+                Location location = locationList.get(locationList.size() - 1);
+                Log.i("MapsActivity", "Location: " + location.getLatitude() + " " + location.getLongitude());
+                mLastLocation = location;
+
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+                //move map camera
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+            }
+        }
+    };
+
 
     @SuppressLint("MissingPermission")
     private void enableMyLocation() {
@@ -101,7 +147,10 @@ public class MapsActivity extends AppCompatActivity implements
                 == PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
+
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
             mMap.setMyLocationEnabled(true);
+
             return;
         }
 
@@ -111,7 +160,7 @@ public class MapsActivity extends AppCompatActivity implements
 
     @Override
     public boolean onMyLocationButtonClick() {
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false;
@@ -140,16 +189,6 @@ public class MapsActivity extends AppCompatActivity implements
             // Permission was denied. Display an error message
             // Display the missing permission error dialog when the fragments resume.
             permissionDenied = true;
-        }
-    }
-
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        if (permissionDenied) {
-            // Permission was not granted, display error dialog.
-            showMissingPermissionError();
-            permissionDenied = false;
         }
     }
 
