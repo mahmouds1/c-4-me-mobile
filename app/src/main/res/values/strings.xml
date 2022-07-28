@@ -31,4 +31,12 @@
     <string name="locationQTitle">Where am i?</string>
     <string name="messagesQTitle">Do I have any messages?</string>
     <string name="notesQTitle">Pull up my notes.</string>
+
+
+    //touchpad options
+    <string name="touchpadOptionTap">Tap</string>
+    <string name="touchpadOptionSwipe">Swipe</string>
+    <string name="touchpadOptionPressHold">Press &amp; Hold</string>
+
+
 </resources>
