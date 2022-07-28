@@ -25,7 +25,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Log.v(TAG, "onCreate() is called");
+        Log.v(TAG, "SA onCreate() is called");
         Button saveBtn = (Button) findViewById(R.id.saveButt);
 
         //spinner adapters for alert settings
@@ -76,35 +76,39 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     protected void onStart() {
         super.onStart();
 
-        Log.v(TAG, "onStart() is called");
+        Log.v(TAG, "SA onStart() is called");
+        loadSharedPref();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        Log.v(TAG, "onResume() is called");
+        Log.v(TAG, "SA onResume() is called");
+        loadSharedPref();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        Log.v(TAG, "onPause() is called");
+        Log.v(TAG, "SA onPause() is called");
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        Log.v(TAG, "onStop() is called");
+        Log.v(TAG, "SA onStop() is called");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
 
-        Log.v(TAG, "onRestart() is called");
+        Log.v(TAG, "SA onRestart() is called");
+
     }
 
 
