@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -53,6 +55,37 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         });
 
         loadSharedPref();
+
+
+        /*radio buttons data*/
+        //input value from radio buttons - location
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        int rdButtId = radioGroup.getCheckedRadioButtonId();
+        RadioButton locationRadio = (RadioButton) radioGroup.findViewById(rdButtId);
+
+        //Log.v(TAG, "where am i location Q answer: " + locationRadio.getText().toString());
+
+
+        //input value from radio buttons - message
+        RadioGroup radioGroup2 = (RadioGroup) findViewById(R.id.radioGroup2);
+        int rdButtId2 = radioGroup2.getCheckedRadioButtonId();
+        RadioButton messageRadio = (RadioButton) radioGroup.findViewById(rdButtId2);
+
+        //Log.v(TAG, "where am i message Q answer: " + messageRadio.getText().toString());
+
+        //input value from radio buttons - notes
+        RadioGroup radioGroup3 = (RadioGroup) findViewById(R.id.radioGroup3);
+        int rdButtId3 = radioGroup3.getCheckedRadioButtonId();
+        RadioButton notesRadio = (RadioButton) radioGroup.findViewById(rdButtId3);
+
+        //Log.v(TAG, "where am i notes Q answer: " + notesRadio.getText().toString());
+
+        //bundle ig
+        Bundle bundleRadio = new Bundle();
+        bundleRadio.putString("location", locationRadio.getText().toString());
+        bundleRadio.putString("message", messageRadio.getText().toString());
+        bundleRadio.putString("notes", notesRadio.getText().toString());
+
 
         /* //do we need this??
 
