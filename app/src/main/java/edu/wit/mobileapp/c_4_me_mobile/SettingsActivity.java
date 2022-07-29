@@ -23,6 +23,11 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     public static String crowdSpinIn, cautionSpinIn, messageSpinIn, arrivedSpinIn;
     private Spinner crowdSpinner, cautionSpinner, messageSpinner, arrivedSpinner;
 
+    public static String touchLocationIn, touchMessageIn, touchNotesIn;
+    public static RadioButton locationRadio, messageRadio, notesRadio;
+    public static RadioGroup radioGroup, radioGroup2, radioGroup3;
+    public static int rdButtId, rdButtId2, rdButtId3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,98 +39,63 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         //sav button
         Button saveBtn = (Button) findViewById(R.id.saveButt);
 
-        //region crowd spinner
-        ArrayAdapter<CharSequence> crowdAdapter = ArrayAdapter.createFromResource(this, R.array.OptionsTexts, android.R.layout.simple_spinner_item);
-        crowdAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        crowdSpinner = (Spinner) findViewById(R.id.crowdOption);
-        crowdSpinner.setAdapter(crowdAdapter);
-        crowdSpinner.setOnItemSelectedListener(this);
-        Log.v(TAG, "---crowd spinner " + crowdSpinner.getSelectedItem().toString());
+        //region spinners
+
+            //region crowd spinner
+            ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.OptionsTexts, android.R.layout.simple_spinner_item);
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            crowdSpinner = (Spinner) findViewById(R.id.crowdOption);
+            crowdSpinner.setAdapter(spinnerAdapter);
+            crowdSpinner.setOnItemSelectedListener(this);
+
+            //endregion
+
+            //region caution spinner
+            //spinner adapters for alert settings
+            cautionSpinner = findViewById(R.id.cautionOption);
+            cautionSpinner.setAdapter(spinnerAdapter);
+            cautionSpinner.setOnItemSelectedListener(this);
+            //endregion
+
+            //region message spinner
+            messageSpinner = findViewById(R.id.messageOption);
+            messageSpinner.setAdapter(spinnerAdapter);
+            messageSpinner.setOnItemSelectedListener(this);
+            //endregion
+
+            //region arrived spinner
+            arrivedSpinner = findViewById(R.id.arrivedOption);
+            arrivedSpinner.setAdapter(spinnerAdapter);
+            arrivedSpinner.setOnItemSelectedListener(this);
+            //endregion
 
         //endregion
-
-        //region caution spinner
-        //spinner adapters for alert settings
-        ArrayAdapter<CharSequence> cautionAdapter = ArrayAdapter.createFromResource(this, R.array.OptionsTexts, android.R.layout.simple_spinner_item);
-        cautionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        cautionSpinner = findViewById(R.id.cautionOption);
-        cautionSpinner.setAdapter(cautionAdapter);
-        cautionSpinner.setOnItemSelectedListener(this);
-        Log.v(TAG, "---caution spinner " + cautionSpinner.getSelectedItem().toString());
-        //endregion
-
-        //region message spinner
-        ArrayAdapter<CharSequence> messageAdapter = ArrayAdapter.createFromResource(this, R.array.OptionsTexts, android.R.layout.simple_spinner_item);
-        messageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        messageSpinner = findViewById(R.id.messageOption);
-        messageSpinner.setAdapter(messageAdapter);
-        messageSpinner.setOnItemSelectedListener(this);
-        Log.v(TAG, "---message spinner " + messageSpinner.getSelectedItem().toString());
-        //endregion
-
-        //region arrived spinner
-        ArrayAdapter<CharSequence> arrivedAdapter = ArrayAdapter.createFromResource(this, R.array.OptionsTexts, android.R.layout.simple_spinner_item);
-        arrivedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        arrivedSpinner = findViewById(R.id.arrivedOption);
-        arrivedSpinner.setAdapter(arrivedAdapter);
-        arrivedSpinner.setOnItemSelectedListener(this);
-        //endregion
-
-
-
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //get input
-                crowdSpinIn = crowdSpinner.getSelectedItem().toString();
-                cautionSpinIn = cautionSpinner.getSelectedItem().toString();
-                messageSpinIn = messageSpinner.getSelectedItem().toString();
-                arrivedSpinIn = arrivedSpinner.getSelectedItem().toString();
-
-                Log.v(TAG, "crowd selection is:" + crowdSpinIn);
-                Log.v(TAG, "caution selection is:" + cautionSpinIn);
-                Log.v(TAG, "message selection is:" + messageSpinIn);
-                Log.v(TAG, "arrived selection is:" + arrivedSpinIn);
-
-                //save inputs
-                saveSharedPref(crowdSpinIn);
-                saveSharedPref(cautionSpinIn);
-                saveSharedPref(messageSpinIn);
-                saveSharedPref(arrivedSpinIn);
-
-            }
-        });
-
-        loadSharedPref();
-
 
         //region radio buttons data
         //input value from radio buttons - location
-        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-        int rdButtId = radioGroup.getCheckedRadioButtonId();
-        RadioButton locationRadio = (RadioButton) radioGroup.findViewById(rdButtId);
+        radioGroup = findViewById(R.id.radioGroup);
+        rdButtId = radioGroup.getCheckedRadioButtonId();
+        locationRadio = radioGroup.findViewById(rdButtId);
+
+
 
         //Log.v(TAG, "where am i location Q answer: " + locationRadio.getText().toString());
 
-
         //input value from radio buttons - message
-        RadioGroup radioGroup2 = (RadioGroup) findViewById(R.id.radioGroup2);
-        int rdButtId2 = radioGroup2.getCheckedRadioButtonId();
-        RadioButton messageRadio = (RadioButton) radioGroup.findViewById(rdButtId2);
+        radioGroup2 = findViewById(R.id.radioGroup2);
+        rdButtId2 = radioGroup2.getCheckedRadioButtonId();
+        messageRadio = radioGroup2.findViewById(rdButtId2);
 
         //Log.v(TAG, "where am i message Q answer: " + messageRadio.getText().toString());
 
         //input value from radio buttons - notes
-        RadioGroup radioGroup3 = (RadioGroup) findViewById(R.id.radioGroup3);
-        int rdButtId3 = radioGroup3.getCheckedRadioButtonId();
-        RadioButton notesRadio = (RadioButton) radioGroup.findViewById(rdButtId3);
+        /*radioGroup3 = findViewById(R.id.radioGroup3);
+        rdButtId3 = radioGroup3.getCheckedRadioButtonId();
+        notesRadio = radioGroup3.findViewById(rdButtId3);
 
-        //Log.v(TAG, "where am i notes Q answer: " + notesRadio.getText().toString());
+        Log.v(TAG, "where am i notes Q answer: " + notesRadio.getText().toString());*/
 
         //bundle ig
         /*Bundle bundleRadio = new Bundle();
@@ -134,6 +104,56 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         bundleRadio.putString("notes", notesRadio.getText().toString());*/
 
         //endregion radio bundle data
+
+
+        locationRadio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //get input from radio buttons
+                touchLocationIn = locationRadio.getText().toString();
+                touchMessageIn = messageRadio.getText().toString();
+                //touchNotesIn = notesRadio.getText().toString();*/
+
+                Log.v(TAG, "location selection is:" + touchLocationIn);
+                //Log.v(TAG, "message selection is:" + touchMessageIn);
+
+                //saveSharedPref(touchLocationIn);
+                //saveSharedPref(touchMessageIn);
+                //saveSharedPref(touchNotesIn);
+
+                //Log.v(TAG, "notes selection is:" + touchNotesIn);
+
+                Toast.makeText(getApplicationContext(), "Saved Changes", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //get input from spinners
+                crowdSpinIn = crowdSpinner.getSelectedItem().toString();
+                cautionSpinIn = cautionSpinner.getSelectedItem().toString();
+                messageSpinIn = messageSpinner.getSelectedItem().toString();
+                arrivedSpinIn = arrivedSpinner.getSelectedItem().toString();
+
+                //regionLog.v(TAG, "crowd selection is:" + crowdSpinIn);
+                //Log.v(TAG, "caution selection is:" + cautionSpinIn);
+                //Log.v(TAG, "message selection is:" + messageSpinIn);
+                //sLog.v(TAG, "arrived selection is:" + arrivedSpinIn);//endregion
+
+                //save inputs
+                saveSharedPref(crowdSpinIn);
+                saveSharedPref(cautionSpinIn);
+                saveSharedPref(messageSpinIn);
+                saveSharedPref(arrivedSpinIn);
+
+                Toast.makeText(getApplicationContext(), "Saved Changes", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        loadSharedPref();
 
         /* //do we need this??
 
@@ -153,6 +173,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
     }
 
+    //region application lifecycle methods
     @Override
     protected void onStart() {
         super.onStart();
@@ -192,6 +213,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
     }
 
+    //endregion application lifecycle methods
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -199,32 +221,26 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         if(parent.getItemAtPosition(position).equals("None")){
             //do nothing
         } else {
-                //Log.v(TAG, "parent position get id: " + par);
             switch(parent.getId()){
                 case R.id.crowdOption:
                     crowdSpinPos = position;
+                    break;
                 case R.id.cautionOption:
                     cautionSpinPos = position;
+                    break;
                 case R.id.messageOption:
                     messageSpinPos = position;
+                    break;
                 case R.id.arrivedOption:
                     arrivedSpinPos = position;
+                    break;
             }
 
-                //2131296403 crowd
-                //2131296367 caution
-                //message 2131296546
-                //arrived 2131296344
-
-
-
-                //arrivedSpinPos = (int) arrivedSpinner.getItemAtPosition(position);
-
-                Log.v(TAG, "crowdSpinPos Updated " + crowdSpinPos);
+                //region Log.v(TAG, "crowdSpinPos Updated " + crowdSpinPos);
                 Log.v(TAG, "cautionSpinPos Updated " + cautionSpinPos);
                 Log.v(TAG, "messageSpinPos Updated " + messageSpinPos);
                 Log.v(TAG, "arrivedSpinPos Updated " + arrivedSpinPos);
-                //String text = parent.getItemAtPosition(position).toString();
+                //endregionString text = parent.getItemAtPosition(position).toString();
         }
 
     }
@@ -238,7 +254,14 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         prefEdit.putString("cautionSpinIn", text);
         prefEdit.putString("messageSpinIn", text);
         prefEdit.putString("arrivedSpinIn", text);
-        prefEdit.apply();
+
+        //save radio buttons choices
+        prefEdit.putString("touchLocationIn", text);
+        //prefEdit.putString("touchMessageIn", text);
+        //prefEdit.putString("touchNotesIn", text);
+
+
+        prefEdit.commit();
 
     }
 
@@ -251,10 +274,19 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         String getCautionSpinIn = sharedPref.getString("cautionSpinIn", "");
         String getMessageSpinIn = sharedPref.getString("messageSpinIn", "");
         String getArrivedSpinIn = sharedPref.getString("arrivedSpinIn", "");
-        Log.v(TAG, "getCrowdSpinIn= " + getCrowdSpinIn);
-        Log.v(TAG, "getCautionSpinIn= " + getCautionSpinIn);
-        Log.v(TAG, "getMessageSpinIn= " + getMessageSpinIn);
-        Log.v(TAG, "getArrivedSpinIn= " + getArrivedSpinIn);
+
+
+        //get radio button choices
+        String touchLocationIn = sharedPref.getString("touchLocationIn", "");
+        //String touchMessageIn = sharedPref.getString("touchMessageIn", "");
+        //String touchNotesIn = sharedPref.getString("touchNotesIn", "");
+
+
+
+        //regionLog.v(TAG, "getCrowdSpinIn= " + getCrowdSpinIn);
+        //Log.v(TAG, "getCautionSpinIn= " + getCautionSpinIn);
+        //Log.v(TAG, "getMessageSpinIn= " + getMessageSpinIn);
+        //Log.v(TAG, "getArrivedSpinIn= " + getArrivedSpinIn);//endregion
 
         //check if null or empty
         if((getCrowdSpinIn != null || getCrowdSpinIn != "") && (getCautionSpinIn != null || getCautionSpinIn != "")
@@ -268,8 +300,26 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
         } else {
             //do nothing
-            Log.v(TAG, "no preferences found");
+            Log.v(TAG, "no spinner preferences found");
         }
+
+
+        /*if((touchLocationIn != null || touchLocationIn != "") && (touchMessageIn != null || touchMessageIn != "")
+                && (touchNotesIn != null || touchNotesIn != "")){
+
+            //update text for  spinner
+            if(){
+
+            }
+            locationRadio.setSe(touchLocationIn, true);
+            messageRadio.setSelection(touchMessageIn, true);
+            notesRadio.setSelection(touchNotesIn, true);
+
+        } else {
+            //do nothing
+            Log.v(TAG, "no radio button preferences found");
+        }*/
+
 
         Log.v(TAG, "done");
     }
