@@ -19,6 +19,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
     static String TAG = "myApp";
     public static final String myPreferences = "myPref";
+    public static int crowdspinPos;
     private Spinner crowdSpinner, cautionSpinner, messageSpinner, arrivedSpinner;
 
 
@@ -37,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
         //crowd spinner
         crowdSpinner = (Spinner) findViewById(R.id.crowdOption);
+        Log.v(TAG, "adapter " + adapter);
         crowdSpinner.setAdapter(adapter);
         crowdSpinner.setOnItemSelectedListener(this);
         Log.v(TAG, "crowdSpinner" + crowdSpinner.getSelectedItem().toString());
@@ -57,7 +59,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         loadSharedPref();
 
 
-        /*radio buttons data*/
+        //region radio buttons data
         //input value from radio buttons - location
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         int rdButtId = radioGroup.getCheckedRadioButtonId();
@@ -81,11 +83,12 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         //Log.v(TAG, "where am i notes Q answer: " + notesRadio.getText().toString());
 
         //bundle ig
-        Bundle bundleRadio = new Bundle();
+        /*Bundle bundleRadio = new Bundle();
         bundleRadio.putString("location", locationRadio.getText().toString());
         bundleRadio.putString("message", messageRadio.getText().toString());
-        bundleRadio.putString("notes", notesRadio.getText().toString());
+        bundleRadio.putString("notes", notesRadio.getText().toString());*/
 
+        //endregion radio bundle data
 
         /* //do we need this??
 
@@ -110,7 +113,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         super.onStart();
 
         Log.v(TAG, "SA onStart() is called");
-        loadSharedPref();
+        //loadSharedPref();
     }
 
     @Override
@@ -151,8 +154,10 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         if(parent.getItemAtPosition(position).equals("None")){
             //do nothing
         } else {
+            crowdspinPos = position;
+            //Log.v(TAG, "crowdSpinPosUpdated " +crowdspinPos);
             String text = parent.getItemAtPosition(position).toString();
-            Toast.makeText(parent.getContext(), "Alert changed to: " + text, Toast.LENGTH_LONG).show();
+            //Toast.makeText(parent.getContext(), "Alert changed to: " + text, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -163,13 +168,26 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
         prefEdit.putString("crowdSpinner", text);
         prefEdit.apply();
-        Log.v(TAG, "data saved i hope");
+        Log.v(TAG, "data saved");
 
     }
 
     public void loadSharedPref(){
+        Log.v(TAG, "loadSharedPref is called");
         SharedPreferences sharedPref = getSharedPreferences(myPreferences, Context.MODE_PRIVATE);
         String ans = sharedPref.getString("crowdSpinner", "");
+        Log.v(TAG, "answer= " +ans);
+
+        if(ans != null || ans != ""){
+            //update text for  spinner
+            Log.v(TAG, "crowdSpinPos= " + crowdspinPos);
+            crowdSpinner.setSelection(crowdspinPos, true);
+        }else {
+            //do nothing
+            Log.v(TAG, "no preferences");
+        }
+
+        Log.v(TAG, "done");
     }
 
     @Override
