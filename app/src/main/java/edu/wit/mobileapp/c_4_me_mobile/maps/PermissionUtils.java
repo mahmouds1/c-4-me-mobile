@@ -26,6 +26,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+
 import android.widget.Toast;
 
 import edu.wit.mobileapp.c_4_me_mobile.R;
@@ -39,7 +41,7 @@ public abstract class PermissionUtils {
      * Requests the fine and coarse location permissions. If a rationale with an additional
      * explanation should be shown to the user, displays a dialog that triggers the request.
      */
-    public static void requestLocationPermissions(AppCompatActivity activity, int requestId,
+    public static void requestLocationPermissions(FragmentActivity activity, int requestId,
                                                   boolean finishActivity) {
         if (ActivityCompat
                 .shouldShowRequestPermissionRationale(activity, permission.ACCESS_FINE_LOCATION) ||

@@ -2,6 +2,7 @@ package edu.wit.mobileapp.c_4_me_mobile.maps;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -9,11 +10,14 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -27,13 +31,15 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.List;
 
 import edu.wit.mobileapp.c_4_me_mobile.R;
 import edu.wit.mobileapp.c_4_me_mobile.databinding.ActivityMapsBinding;
 
-public class MapsActivity extends AppCompatActivity implements
+public class MapsActivity extends FragmentActivity implements
         GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback,
@@ -50,6 +56,11 @@ public class MapsActivity extends AppCompatActivity implements
     LocationRequest mLocationRequest;
     Location mLastLocation;
     private GoogleMap mMap;
+
+    SearchView searchView;
+
+    boolean isSearch = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +80,48 @@ public class MapsActivity extends AppCompatActivity implements
                 .beginTransaction()
                 .add(R.id.map, mapFragment)
                 .commit();
+
+        // Initialize searchView
+        searchView = (SearchView) findViewById(R.id.searchView);
+
+        // Setup listener
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // User is now searching
+                isSearch = true;
+
+                // Grab name of location
+                String location = searchView.getQuery().toString();
+
+                // List to store all address related to query
+                List<Address> addressList = null;
+
+                if(location != null || location.equals("")){
+                    Geocoder geocoder = new Geocoder(MapsActivity.this);
+                    try{
+                        // attempt to find the location asked by user
+                        addressList = geocoder.getFromLocationName(location, 1);
+                    } catch (IOException e){
+                        e.printStackTrace();
+                    }
+                    // Collect latitude and longitude of queried location
+                    LatLng latLng = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
+
+                    // Create a marker for the queried location
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(location));
+
+                    // move camera to location
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         mapFragment.getMapAsync(this);
     }
@@ -107,6 +160,8 @@ public class MapsActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+        // set map padding
+        mMap.setPadding(0,130,0,0);
 
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
@@ -133,8 +188,11 @@ public class MapsActivity extends AppCompatActivity implements
 
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-                //move map camera
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                // Check to see if the user is searching
+                if (!isSearch){
+                    //move map camera
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                }
             }
         }
     };
@@ -160,9 +218,8 @@ public class MapsActivity extends AppCompatActivity implements
 
     @Override
     public boolean onMyLocationButtonClick() {
-        //Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
+        // User is now looking for their location
+        isSearch = false;
         return false;
     }
 
