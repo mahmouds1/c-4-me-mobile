@@ -19,7 +19,8 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
     static String TAG = "myApp";
     public static final String myPreferences = "myPref";
-    public static int crowdspinPos;
+    public static int crowdSpinPos, cautionSpinPos, messageSpinPos, arrivedSpinPos;
+    public static String crowdSpinIn, cautionSpinIn, messageSpinIn, arrivedSpinIn;
     private Spinner crowdSpinner, cautionSpinner, messageSpinner, arrivedSpinner;
 
 
@@ -29,29 +30,73 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         setContentView(R.layout.activity_settings);
 
         Log.v(TAG, "SA onCreate() is called");
+
+        //sav button
         Button saveBtn = (Button) findViewById(R.id.saveButt);
 
-        //spinner adapters for alert settings
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.OptionsTexts, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //region crowd spinner
+        ArrayAdapter<CharSequence> crowdAdapter = ArrayAdapter.createFromResource(this, R.array.OptionsTexts, android.R.layout.simple_spinner_item);
+        crowdAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-
-        //crowd spinner
         crowdSpinner = (Spinner) findViewById(R.id.crowdOption);
-        Log.v(TAG, "adapter " + adapter);
-        crowdSpinner.setAdapter(adapter);
+        crowdSpinner.setAdapter(crowdAdapter);
         crowdSpinner.setOnItemSelectedListener(this);
-        Log.v(TAG, "crowdSpinner" + crowdSpinner.getSelectedItem().toString());
+        Log.v(TAG, "---crowd spinner " + crowdSpinner.getSelectedItem().toString());
+
+        //endregion
+
+        //region caution spinner
+        //spinner adapters for alert settings
+        ArrayAdapter<CharSequence> cautionAdapter = ArrayAdapter.createFromResource(this, R.array.OptionsTexts, android.R.layout.simple_spinner_item);
+        cautionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        cautionSpinner = findViewById(R.id.cautionOption);
+        cautionSpinner.setAdapter(cautionAdapter);
+        cautionSpinner.setOnItemSelectedListener(this);
+        Log.v(TAG, "---caution spinner " + cautionSpinner.getSelectedItem().toString());
+        //endregion
+
+        //region message spinner
+        ArrayAdapter<CharSequence> messageAdapter = ArrayAdapter.createFromResource(this, R.array.OptionsTexts, android.R.layout.simple_spinner_item);
+        messageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        messageSpinner = findViewById(R.id.messageOption);
+        messageSpinner.setAdapter(messageAdapter);
+        messageSpinner.setOnItemSelectedListener(this);
+        Log.v(TAG, "---message spinner " + messageSpinner.getSelectedItem().toString());
+        //endregion
+
+        //region arrived spinner
+        ArrayAdapter<CharSequence> arrivedAdapter = ArrayAdapter.createFromResource(this, R.array.OptionsTexts, android.R.layout.simple_spinner_item);
+        arrivedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        arrivedSpinner = findViewById(R.id.arrivedOption);
+        arrivedSpinner.setAdapter(arrivedAdapter);
+        arrivedSpinner.setOnItemSelectedListener(this);
+        //endregion
+
+
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v(TAG, "saveButton clicked");
 
-                String text = crowdSpinner.getSelectedItem().toString();
-                Log.v(TAG, "spinner selection is:" + text);
+                //get input
+                crowdSpinIn = crowdSpinner.getSelectedItem().toString();
+                cautionSpinIn = cautionSpinner.getSelectedItem().toString();
+                messageSpinIn = messageSpinner.getSelectedItem().toString();
+                arrivedSpinIn = arrivedSpinner.getSelectedItem().toString();
 
-                saveSharedPref(text);
+                Log.v(TAG, "crowd selection is:" + crowdSpinIn);
+                Log.v(TAG, "caution selection is:" + cautionSpinIn);
+                Log.v(TAG, "message selection is:" + messageSpinIn);
+                Log.v(TAG, "arrived selection is:" + arrivedSpinIn);
+
+                //save inputs
+                saveSharedPref(crowdSpinIn);
+                saveSharedPref(cautionSpinIn);
+                saveSharedPref(messageSpinIn);
+                saveSharedPref(arrivedSpinIn);
 
             }
         });
@@ -154,10 +199,32 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         if(parent.getItemAtPosition(position).equals("None")){
             //do nothing
         } else {
-            crowdspinPos = position;
-            //Log.v(TAG, "crowdSpinPosUpdated " +crowdspinPos);
-            String text = parent.getItemAtPosition(position).toString();
-            //Toast.makeText(parent.getContext(), "Alert changed to: " + text, Toast.LENGTH_LONG).show();
+                //Log.v(TAG, "parent position get id: " + par);
+            switch(parent.getId()){
+                case R.id.crowdOption:
+                    crowdSpinPos = position;
+                case R.id.cautionOption:
+                    cautionSpinPos = position;
+                case R.id.messageOption:
+                    messageSpinPos = position;
+                case R.id.arrivedOption:
+                    arrivedSpinPos = position;
+            }
+
+                //2131296403 crowd
+                //2131296367 caution
+                //message 2131296546
+                //arrived 2131296344
+
+
+
+                //arrivedSpinPos = (int) arrivedSpinner.getItemAtPosition(position);
+
+                Log.v(TAG, "crowdSpinPos Updated " + crowdSpinPos);
+                Log.v(TAG, "cautionSpinPos Updated " + cautionSpinPos);
+                Log.v(TAG, "messageSpinPos Updated " + messageSpinPos);
+                Log.v(TAG, "arrivedSpinPos Updated " + arrivedSpinPos);
+                //String text = parent.getItemAtPosition(position).toString();
         }
 
     }
@@ -166,25 +233,42 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         SharedPreferences sharedPref = getSharedPreferences(myPreferences, Context.MODE_PRIVATE);
         SharedPreferences.Editor prefEdit = sharedPref.edit();
 
-        prefEdit.putString("crowdSpinner", text);
+        //save spinner choices
+        prefEdit.putString("crowdSpinIn", text);
+        prefEdit.putString("cautionSpinIn", text);
+        prefEdit.putString("messageSpinIn", text);
+        prefEdit.putString("arrivedSpinIn", text);
         prefEdit.apply();
-        Log.v(TAG, "data saved");
 
     }
 
     public void loadSharedPref(){
         Log.v(TAG, "loadSharedPref is called");
         SharedPreferences sharedPref = getSharedPreferences(myPreferences, Context.MODE_PRIVATE);
-        String ans = sharedPref.getString("crowdSpinner", "");
-        Log.v(TAG, "answer= " +ans);
 
-        if(ans != null || ans != ""){
+        //get spinner choices
+        String getCrowdSpinIn = sharedPref.getString("crowdSpinIn", "");
+        String getCautionSpinIn = sharedPref.getString("cautionSpinIn", "");
+        String getMessageSpinIn = sharedPref.getString("messageSpinIn", "");
+        String getArrivedSpinIn = sharedPref.getString("arrivedSpinIn", "");
+        Log.v(TAG, "getCrowdSpinIn= " + getCrowdSpinIn);
+        Log.v(TAG, "getCautionSpinIn= " + getCautionSpinIn);
+        Log.v(TAG, "getMessageSpinIn= " + getMessageSpinIn);
+        Log.v(TAG, "getArrivedSpinIn= " + getArrivedSpinIn);
+
+        //check if null or empty
+        if((getCrowdSpinIn != null || getCrowdSpinIn != "") && (getCautionSpinIn != null || getCautionSpinIn != "")
+                && (getMessageSpinIn != null || getMessageSpinIn != "") && (getArrivedSpinIn != null || getArrivedSpinIn != "")){
+
             //update text for  spinner
-            Log.v(TAG, "crowdSpinPos= " + crowdspinPos);
-            crowdSpinner.setSelection(crowdspinPos, true);
-        }else {
+            crowdSpinner.setSelection(crowdSpinPos, true);
+            cautionSpinner.setSelection(cautionSpinPos, true);
+            messageSpinner.setSelection(messageSpinPos, true);
+            arrivedSpinner.setSelection(arrivedSpinPos, true);
+
+        } else {
             //do nothing
-            Log.v(TAG, "no preferences");
+            Log.v(TAG, "no preferences found");
         }
 
         Log.v(TAG, "done");
