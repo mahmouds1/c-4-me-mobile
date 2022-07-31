@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -26,7 +27,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     public static String touchLocationIn, touchMessageIn, touchNotesIn;
     public static RadioButton locationRadio, messageRadio, notesRadio;
     public static RadioGroup radioGroup, radioGroup2, radioGroup3;
-    public static int rdButtId, rdButtId2, rdButtId3;
+
+    public SharedPreferences sharedPref;
+    public SharedPreferences.Editor prefEdit;
 
 
     @Override
@@ -36,9 +39,10 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
         Log.v(TAG, "SA onCreate() is called");
 
-        //sav button
+        //save button + shared pref initialization
         Button saveBtn = (Button) findViewById(R.id.saveButt);
-
+        sharedPref = getSharedPreferences(myPreferences, Context.MODE_PRIVATE);
+        prefEdit = sharedPref.edit();
 
         //region spinners
 
@@ -76,57 +80,72 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         //region radio buttons data
         //input value from radio buttons - location
         radioGroup = findViewById(R.id.radioGroup);
-        rdButtId = radioGroup.getCheckedRadioButtonId();
-        locationRadio = radioGroup.findViewById(rdButtId);
-
-
-
-        //Log.v(TAG, "where am i location Q answer: " + locationRadio.getText().toString());
 
         //input value from radio buttons - message
         radioGroup2 = findViewById(R.id.radioGroup2);
-        rdButtId2 = radioGroup2.getCheckedRadioButtonId();
-        messageRadio = radioGroup2.findViewById(rdButtId2);
-
-        //Log.v(TAG, "where am i message Q answer: " + messageRadio.getText().toString());
 
         //input value from radio buttons - notes
-        /*radioGroup3 = findViewById(R.id.radioGroup3);
-        rdButtId3 = radioGroup3.getCheckedRadioButtonId();
-        notesRadio = radioGroup3.findViewById(rdButtId3);
-
-        Log.v(TAG, "where am i notes Q answer: " + notesRadio.getText().toString());*/
-
-        //bundle ig
-        /*Bundle bundleRadio = new Bundle();
-        bundleRadio.putString("location", locationRadio.getText().toString());
-        bundleRadio.putString("message", messageRadio.getText().toString());
-        bundleRadio.putString("notes", notesRadio.getText().toString());*/
-
-        //endregion radio bundle data
+        radioGroup3 = findViewById(R.id.radioGroup3);
 
 
-        locationRadio.setOnClickListener(new View.OnClickListener() {
+        //radioGroup option check 1
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                //what was selected index - used internally
+                int index = radioGroup.indexOfChild(findViewById(radioGroup.getCheckedRadioButtonId()));
+                Log.v(TAG,"location index chosen: "+ index);
+                prefEdit.putInt("touchLocationIn", index);
+                Log.v(TAG, "touchLocation saving .." + index);
 
-                //get input from radio buttons
-                touchLocationIn = locationRadio.getText().toString();
-                touchMessageIn = messageRadio.getText().toString();
-                //touchNotesIn = notesRadio.getText().toString();*/
+                /*used to see what was selected -- testing purposes only
+                locationRadio = (RadioButton) radioGroup.getChildAt(index);
+                String selectedtext = locationRadio.getText().toString();
+                //Log.v(TAG,"selectedText output: "+ selectedtext);*/
 
-                Log.v(TAG, "location selection is:" + touchLocationIn);
-                //Log.v(TAG, "message selection is:" + touchMessageIn);
-
-                //saveSharedPref(touchLocationIn);
-                //saveSharedPref(touchMessageIn);
-                //saveSharedPref(touchNotesIn);
-
-                //Log.v(TAG, "notes selection is:" + touchNotesIn);
-
-                Toast.makeText(getApplicationContext(), "Saved Changes", Toast.LENGTH_SHORT).show();
+                prefEdit.commit();
             }
         });
+
+        //radioGroup2 option check
+        radioGroup2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                //what was selected index - used internally
+                int index = radioGroup2.indexOfChild(findViewById(radioGroup2.getCheckedRadioButtonId()));
+                Log.v(TAG,"message index chosen: "+ index);
+                prefEdit.putInt("touchMessageIn", index);
+                Log.v(TAG, "touchMessageIn saving .." + index);
+
+                /*used to see what was selected -- testing purposes only
+                messageRadio = (RadioButton) radioGroup2.getChildAt(index);
+                String selectedtext = messageRadio.getText().toString();
+                //Log.v(TAG,"selectedText output: "+ selectedtext);*/
+
+                prefEdit.commit();
+            }
+        });
+
+        //radioGroup3 option check
+        radioGroup3.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                //what was selected index - used internally
+                int index = radioGroup3.indexOfChild(findViewById(radioGroup3.getCheckedRadioButtonId()));
+                Log.v(TAG,"notes index chosen: "+ index);
+                prefEdit.putInt("touchNotesIn", index);
+                Log.v(TAG, "touchNotesIn saving .." + index);
+
+                /*used to see what was selected -- testing purposes only
+                notesRadio = (RadioButton) radioGroup3.getChildAt(index);
+                String selectedtext = notesRadio.getText().toString();
+                //Log.v(TAG,"selectedText output: "+ selectedtext);*/
+
+                prefEdit.commit();
+            }
+        });
+
+        //endregion radio buttons data
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,22 +173,6 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         });
 
         loadSharedPref();
-
-        /* //do we need this??
-
-         Button homeBtn = (Button) findViewById(R.id.settingsSwitchButton);
-        homeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.v(TAG, "in settings page, going back to home");
-
-                Intent homeIntent = new Intent();
-                homeIntent.setClass(SettingsActivity.this, MainActivity.class);
-
-                startActivity(homeIntent);
-
-            }
-        });*/
 
     }
 
@@ -218,6 +221,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+        //check what option was selected
         if(parent.getItemAtPosition(position).equals("None")){
             //do nothing
         } else {
@@ -237,30 +241,24 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             }
 
                 //region Log.v(TAG, "crowdSpinPos Updated " + crowdSpinPos);
-                Log.v(TAG, "cautionSpinPos Updated " + cautionSpinPos);
-                Log.v(TAG, "messageSpinPos Updated " + messageSpinPos);
-                Log.v(TAG, "arrivedSpinPos Updated " + arrivedSpinPos);
+                //Log.v(TAG, "cautionSpinPos Updated " + cautionSpinPos);
+                //Log.v(TAG, "messageSpinPos Updated " + messageSpinPos);
+                //Log.v(TAG, "arrivedSpinPos Updated " + arrivedSpinPos);
                 //endregionString text = parent.getItemAtPosition(position).toString();
         }
 
     }
 
     public void saveSharedPref(String text){
-        SharedPreferences sharedPref = getSharedPreferences(myPreferences, Context.MODE_PRIVATE);
-        SharedPreferences.Editor prefEdit = sharedPref.edit();
+        sharedPref = getSharedPreferences(myPreferences, Context.MODE_PRIVATE);
+        prefEdit = sharedPref.edit();
+        //prefEdit.clear();
 
         //save spinner choices
         prefEdit.putString("crowdSpinIn", text);
         prefEdit.putString("cautionSpinIn", text);
         prefEdit.putString("messageSpinIn", text);
         prefEdit.putString("arrivedSpinIn", text);
-
-        //save radio buttons choices
-        prefEdit.putString("touchLocationIn", text);
-        //prefEdit.putString("touchMessageIn", text);
-        //prefEdit.putString("touchNotesIn", text);
-
-
         prefEdit.commit();
 
     }
@@ -275,18 +273,21 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         String getMessageSpinIn = sharedPref.getString("messageSpinIn", "");
         String getArrivedSpinIn = sharedPref.getString("arrivedSpinIn", "");
 
-
         //get radio button choices
-        String touchLocationIn = sharedPref.getString("touchLocationIn", "");
-        //String touchMessageIn = sharedPref.getString("touchMessageIn", "");
-        //String touchNotesIn = sharedPref.getString("touchNotesIn", "");
-
+        int getTouchLocationIn = sharedPref.getInt("touchLocationIn", 99);
+        int getTouchMessageIn = sharedPref.getInt("touchMessageIn", 99);
+        int getTouchNotesIn = sharedPref.getInt("touchNotesIn", 99);
 
 
         //regionLog.v(TAG, "getCrowdSpinIn= " + getCrowdSpinIn);
         //Log.v(TAG, "getCautionSpinIn= " + getCautionSpinIn);
         //Log.v(TAG, "getMessageSpinIn= " + getMessageSpinIn);
-        //Log.v(TAG, "getArrivedSpinIn= " + getArrivedSpinIn);//endregion
+        //Log.v(TAG, "getArrivedSpinIn= " + getArrivedSpinIn);
+        // endregion
+
+        //regionLog.v(TAG, "getTouchLocationIndex= " + getTouchLocationIn);
+        //Log.v(TAG, "getTouchMessageIndex= " + getTouchMessageIn);
+        //endregionLog.v(TAG, "getTouchNotesIndex= " + getTouchNotesIn);
 
         //check if null or empty
         if((getCrowdSpinIn != null || getCrowdSpinIn != "") && (getCautionSpinIn != null || getCautionSpinIn != "")
@@ -303,25 +304,58 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             Log.v(TAG, "no spinner preferences found");
         }
 
+        //assign radio button appropriate index - location
+        switch (getTouchLocationIn){
+            case 0:
+                ((RadioButton) radioGroup.getChildAt(0)).setChecked(true);
+                break;
+            case 1:
+                ((RadioButton) radioGroup.getChildAt(1)).setChecked(true);
+                break;
+            case 2:
+                ((RadioButton) radioGroup.getChildAt(2)).setChecked(true);
+                break;
+            case 99:
+                //do nothing
+                Log.v(TAG, "no location radio button preferences found");
+                break;
+        }
 
-        /*if((touchLocationIn != null || touchLocationIn != "") && (touchMessageIn != null || touchMessageIn != "")
-                && (touchNotesIn != null || touchNotesIn != "")){
+        //assign radio button appropriate index - message
+        switch (getTouchMessageIn){
+            case 0:
+                ((RadioButton) radioGroup2.getChildAt(0)).setChecked(true);
+                break;
+            case 1:
+                ((RadioButton) radioGroup2.getChildAt(1)).setChecked(true);
+                break;
+            case 2:
+                ((RadioButton) radioGroup2.getChildAt(2)).setChecked(true);
+                break;
+            case 99:
+                //do nothing
+                Log.v(TAG, "no message radio button preferences found");
+                break;
+        }
 
-            //update text for  spinner
-            if(){
+        //assign radio button appropriate index - notes
+        switch (getTouchNotesIn){
+            case 0:
+                ((RadioButton) radioGroup3.getChildAt(0)).setChecked(true);
+                break;
+            case 1:
+                ((RadioButton) radioGroup3.getChildAt(1)).setChecked(true);
+                break;
+            case 2:
+                ((RadioButton) radioGroup3.getChildAt(2)).setChecked(true);
+                break;
+            case 99:
+                //do nothing
+                Log.v(TAG, "no notes radio button preferences found");
+                break;
+        }
 
-            }
-            locationRadio.setSe(touchLocationIn, true);
-            messageRadio.setSelection(touchMessageIn, true);
-            notesRadio.setSelection(touchNotesIn, true);
-
-        } else {
-            //do nothing
-            Log.v(TAG, "no radio button preferences found");
-        }*/
-
-
-        Log.v(TAG, "done");
+        //Log.v(TAG, "done");
     }
 
     @Override
