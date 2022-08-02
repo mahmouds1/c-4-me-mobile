@@ -13,4 +13,5 @@
     // connectivity set up
     <string name="connect">Connect</string>
     <string name="Scan">Scan</string>
+    <string name="bluetooth">fuck this shit</string>
 </resources>

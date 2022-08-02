@@ -15,24 +15,17 @@
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:paddingBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/btn_scan"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:text="@string/Scan"
-            android:textSize="13sp"
-            />
-        <Button
-            android:id="@+id/button_connect"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="@string/connect"
-            android:visibility="gone" />
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -47,11 +40,21 @@
 
         <Button
             android:id="@+id/btn_connect"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/connect"
-            android:textSize="13sp"/>
+            android:textSize="12sp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="137dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
