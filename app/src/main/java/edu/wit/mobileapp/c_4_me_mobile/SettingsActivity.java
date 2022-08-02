@@ -1,8 +1,13 @@
 package edu.wit.mobileapp.c_4_me_mobile;
 
+import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,19 +18,22 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.os.VibrationEffect;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     static String TAG = "myApp";
     public static final String myPreferences = "myPref";
+    public Vibrator vibrator;
+
     public static int crowdSpinPos, cautionSpinPos, messageSpinPos, arrivedSpinPos;
     public static String crowdSpinIn, cautionSpinIn, messageSpinIn, arrivedSpinIn;
     private Spinner crowdSpinner, cautionSpinner, messageSpinner, arrivedSpinner;
 
-    public static String touchLocationIn, touchMessageIn, touchNotesIn;
-    public static RadioButton locationRadio, messageRadio, notesRadio;
     public static RadioGroup radioGroup, radioGroup2, radioGroup3;
 
     public SharedPreferences sharedPref;
@@ -169,6 +177,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
                 saveSharedPref(arrivedSpinIn);
 
                 Toast.makeText(getApplicationContext(), "Saved Changes", Toast.LENGTH_SHORT).show();
+                //vibratePhone();
+                sendPushNotification();
+
             }
         });
 
@@ -360,6 +371,59 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    //method to vibrate phone
+    @SuppressLint("MissingPermission")
+    public void vibratePhone(){
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        //Check if device has vibrator hardware or not, if not then return from this method
+        //don't execute futher code below
+        if (!vibrator.hasVibrator()) {
+            Log.v(TAG, "phone has no vibrator");
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            //if API = 26(Oreo) or higher
+            vibrator.vibrate(
+                    VibrationEffect.createOneShot(1000,VibrationEffect.DEFAULT_AMPLITUDE)
+            );
+
+        } else {
+            //vibrate for 1 second
+            vibrator.vibrate(1000);
+
+            //Vibration Pattern
+            //long[] pattern = {0, 200, 10, 500};
+            //vibrator.vibrate(pattern, -1);
+        }
+    }
+
+
+    public void sendPushNotification(){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationChannel channel = new NotificationChannel("my notification", "my notif", NotificationManager.IMPORTANCE_HIGH);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+
+        }
+
+        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(SettingsActivity.this, "my notification");
+        nBuilder.setContentTitle("C-4-ME");
+        nBuilder.setContentText("C-4-ME will send a notifcation");
+        nBuilder.setSmallIcon(R.drawable.ic_launcher_background); //this is the icon we shoudl add to drawable file
+        //nBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);
+        nBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        nBuilder.setAutoCancel(true);
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(SettingsActivity.this);
+        managerCompat.notify(1, nBuilder.build());
 
     }
 }
