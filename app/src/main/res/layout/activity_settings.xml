@@ -4,158 +4,150 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <!--region alerts-->
 
-    <!--alert title-->
-    <TextView
-        android:id="@+id/alertText"
-        android:layout_width="113dp"
-        android:layout_height="47dp"
-        android:text="@string/alertTitle"
-        android:textSize="35sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.097"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.055"/>
+        <!--alert title-->
+        <TextView
+            android:id="@+id/alertText"
+            android:layout_width="113dp"
+            android:layout_height="47dp"
+            android:text="@string/alertTitle"
+            android:textSize="35sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.097"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.043" />
 
-    <!--region crowd alert-->
+        <!--region crowd alert-->
+        <TextView
+            android:id="@+id/alertCrowdText"
+            android:layout_width="130dp"
+            android:layout_height="47dp"
+            android:gravity="center_vertical"
+            android:text="@string/crowdTitle"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.103"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.131" />
 
+        <Spinner
+            android:id="@+id/crowdOption"
+            android:layout_width="200dp"
+            android:layout_height="47dp"
+            android:text="pick one"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.881"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.131" />
 
-    <!--endregion crowd alert-->
+        <!--endregion crowd alert-->
 
-    <!--region caution alert-->
+        <!--region caution alert-->
+        <TextView
+            android:id="@+id/alertCautionText"
+            android:layout_width="130dp"
+            android:layout_height="47dp"
+            android:gravity="center_vertical"
+            android:text="@string/cautionTitle"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.103"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.213" />
 
-    <!--endregion caution alert-->
+        <Spinner
+            android:id="@+id/cautionOption"
+            android:layout_width="200dp"
+            android:layout_height="47dp"
+            android:text="pick one"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.881"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.213" />
 
-    <!--region message alert-->
+        <!--endregion caution alert-->
 
-    <!--endregion message alert-->
+        <!--region message alert-->
 
-    <!--region arrived alert-->
+        <TextView
+            android:id="@+id/alertMessageText"
+            android:layout_width="130dp"
+            android:layout_height="47dp"
+            android:gravity="center_vertical"
+            android:text="@string/messageTitle"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.103"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.299" />
 
-    <!--endregion arrived alert-->
+        <Spinner
+            android:id="@+id/messageOption"
+            android:layout_width="200dp"
+            android:layout_height="47dp"
+            android:text="pick one"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.881"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.299" />
+        <!--endregion message alert-->
+
+        <!--region arrived alert-->
+        <TextView
+            android:id="@+id/alertArrivedText"
+            android:layout_width="130dp"
+            android:layout_height="47dp"
+            android:gravity="center_vertical"
+            android:text="@string/arrivedTitle"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.103"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.381" />
+
+        <Spinner
+            android:id="@+id/arrivedOption"
+            android:layout_width="200dp"
+            android:layout_height="47dp"
+            android:text="pick one"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.881"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.381" />
+
+        <!--endregion arrived alert-->
 
 
     <!--endregion alerts-->
-
 
     <!--region touchpad and gestures-->
 
     <!--touchpad and gestures title -->
 
     <!--region where am i?-->
-
-
-    <TextView
-        android:id="@+id/alertCrowdText"
-        android:layout_width="130dp"
-        android:layout_height="47dp"
-        android:gravity="center"
-        android:text="@string/crowdTitle"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.103"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.146" />
-
-    <TextView
-        android:id="@+id/alertMessageText"
-        android:layout_width="130dp"
-        android:layout_height="47dp"
-        android:gravity="center"
-        android:text="@string/messageTitle"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.103"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.314" />
-
-    <TextView
-        android:id="@+id/alertArrivedText"
-        android:layout_width="130dp"
-        android:layout_height="47dp"
-        android:gravity="center"
-        android:text="@string/arrivedTitle"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.103"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.396" />
-
-    <Spinner
-        android:id="@+id/crowdOption"
-        android:layout_width="200dp"
-        android:layout_height="47dp"
-        android:text="pick one"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.829"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.146" />
-
-    <Spinner
-        android:id="@+id/cautionOption"
-        android:layout_width="200dp"
-        android:layout_height="47dp"
-        android:text="pick one"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.829"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.228" />
-
-    <Spinner
-        android:id="@+id/messageOption"
-        android:layout_width="200dp"
-        android:layout_height="47dp"
-        android:text="pick one"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.829"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.314" />
-
-    <Spinner
-        android:id="@+id/arrivedOption"
-        android:layout_width="200dp"
-        android:layout_height="47dp"
-        android:text="pick one"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.829"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.396" />
-
-    <TextView
-        android:id="@+id/alertCautionText"
-        android:layout_width="130dp"
-        android:layout_height="47dp"
-        android:gravity="center"
-        android:text="@string/cautionTitle"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.103"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.228" />
 
     <TextView
         android:id="@+id/touchpadText"
