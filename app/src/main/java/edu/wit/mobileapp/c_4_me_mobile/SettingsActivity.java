@@ -45,8 +45,6 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         Log.v(TAG, "SA onCreate() is called");
-
-
         //loadSharedPref();
 
     }
@@ -105,6 +103,8 @@ public class SettingsActivity extends AppCompatActivity {
             //Log.v(TAG,"selectedText output: "+ selectedText);*/
 
             prefEdit.commit();
+
+            Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show();
         });
 
         //input value from radio buttons - message
@@ -123,6 +123,7 @@ public class SettingsActivity extends AppCompatActivity {
             //Log.v(TAG,"selectedText output: "+ selectedText);*/
 
             prefEdit.commit();
+            Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show();
         });
 
         //input value from radio buttons - notes
@@ -141,13 +142,14 @@ public class SettingsActivity extends AppCompatActivity {
             //Log.v(TAG,"selectedText output: "+ selectedText);*/
 
             prefEdit.commit();
+            Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show();
         });
 
         //endregion radio buttons data
 
         if (firstTime == true) {
 
-            //Log.v(TAG, "inside if statement where firstTime = true");
+            Log.v(TAG, "inside if statement where firstTime = true");
 
             crowdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -303,12 +305,62 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
+            locationRG.setOnCheckedChangeListener((group, checkedId) -> {
+
+                //what was selected index - used internally
+                locationRBPos = locationRG.indexOfChild(findViewById(locationRG.getCheckedRadioButtonId()));
+                Log.v(TAG, "location index chosen: " + locationRBPos);
+                prefEdit.putInt("touchLocationIn", locationRBPos);
+                Log.v(TAG, "touchLocation saving .." + locationRBPos);
+
+            /*used to see what was selected -- testing purposes only
+            locationRadio = (RadioButton) locationRG.getChildAt(locationRBPos);
+            String selectedText = locationRadio.getText().toString();
+            //Log.v(TAG,"selectedText output: "+ selectedText);*/
+
+                prefEdit.commit();
+
+                Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show();
+            });
+            messageRG.setOnCheckedChangeListener((group, checkedId) -> {
+
+                //what was selected index - used internally
+                messageRBPos = messageRG.indexOfChild(findViewById(messageRG.getCheckedRadioButtonId()));
+                Log.v(TAG, "message index chosen: " + messageRBPos);
+                prefEdit.putInt("touchMessageIn", messageRBPos);
+                Log.v(TAG, "touchMessageIn saving .." + messageRBPos);
+
+            /*used to see what was selected -- testing purposes only
+            messageRadio = (RadioButton) messageRG.getChildAt(messageRBPos);
+            String selectedText = messageRadio.getText().toString();
+            //Log.v(TAG,"selectedText output: "+ selectedText);*/
+
+                prefEdit.commit();
+                Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show();
+            });
+            notesRG.setOnCheckedChangeListener((group, checkedId) -> {
+
+                //what was selected index - used internally
+                notesRBPos = notesRG.indexOfChild(findViewById(notesRG.getCheckedRadioButtonId()));
+                Log.v(TAG, "notes index chosen: " + notesRBPos);
+                prefEdit.putInt("touchNotesIn", notesRBPos);
+                Log.v(TAG, "touchNotesIn saving .." + notesRBPos);
+
+            /*used to see what was selected -- testing purposes only
+            notesRadio = (RadioButton) notesRG.getChildAt(notesRBPos);
+            String selectedText = notesRadio.getText().toString();
+            //Log.v(TAG,"selectedText output: "+ selectedText);*/
+
+                prefEdit.commit();
+                Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show();
+            });
+
             //loadSharedPref();
             firstTime = false;
 
         } else {
 
-            //Log.v(TAG, "inside else statement where firstTime = false");
+            Log.v(TAG, "inside else statement where firstTime = false");
 
              crowdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -386,6 +438,29 @@ public class SettingsActivity extends AppCompatActivity {
 
                 }
             });
+
+            locationRG.setOnCheckedChangeListener((group, checkedId) -> {
+
+                //what was selected index - used internally
+                locationRBPos = locationRG.indexOfChild(findViewById(locationRG.getCheckedRadioButtonId()));
+                prefEdit.putInt("touchLocationIn", locationRBPos);
+                prefEdit.commit();
+
+            });
+            messageRG.setOnCheckedChangeListener((group, checkedId) -> {
+
+                //what was selected index - used internally
+                messageRBPos = messageRG.indexOfChild(findViewById(messageRG.getCheckedRadioButtonId()));
+                prefEdit.putInt("touchMessageIn", messageRBPos);
+                prefEdit.commit();
+            });
+            notesRG.setOnCheckedChangeListener((group, checkedId) -> {
+
+                    //what was selected index - used internally
+                    notesRBPos = notesRG.indexOfChild(findViewById(notesRG.getCheckedRadioButtonId()));
+                    prefEdit.putInt("touchNotesIn", notesRBPos);
+                    prefEdit.commit();
+                });
 
         }
 
