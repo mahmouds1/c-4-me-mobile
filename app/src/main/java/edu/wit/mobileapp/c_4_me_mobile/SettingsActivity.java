@@ -60,11 +60,24 @@ public class SettingsActivity extends AppCompatActivity {
                @Override
                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+
                    if(parent.getItemAtPosition(position).equals("None")){
                         //do nothing
                    } else {
                        crowdSpinPos = crowdSpinner.getSelectedItemPosition();
                        Log.v(TAG, "crowd selection string is:" + crowdSpinPos);
+
+                       switch(crowdSpinPos){
+                           case 1:
+                               vibratePhone();
+                               break;
+                           case 2:
+                               sendPushNotification();
+                               break;
+                           case 3:
+                               //TODO:add glasses beep
+                               break;
+                       }
 
                        prefEdit.putInt("crowdSpinIn", crowdSpinPos);
                        prefEdit.commit();
@@ -73,7 +86,7 @@ public class SettingsActivity extends AppCompatActivity {
                        //crowdSpinIn = crowdSpinner.getSelectedItem().toString(); //input to string
                        //Log.v(TAG, "crowd selection string is:" + crowdSpinIn);*/
 
-                       Toast.makeText(getApplicationContext(), "Saved Crowd Alert Changes", Toast.LENGTH_SHORT).show();
+                       //Toast.makeText(getApplicationContext(), "Saved Crowd Alert Changes", Toast.LENGTH_SHORT).show();
                    }
                }
 
@@ -97,6 +110,18 @@ public class SettingsActivity extends AppCompatActivity {
                     } else {
                         cautionSpinPos = cautionSpinner.getSelectedItemPosition();
                         Log.v(TAG, "caution selection string is:" + cautionSpinPos);
+
+                        switch(cautionSpinPos){
+                            case 1:
+                                vibratePhone();
+                                break;
+                            case 2:
+                                sendPushNotification();
+                                break;
+                            case 3:
+                                //TODO:add glasses beep
+                                break;
+                        }
 
                         prefEdit.putInt("cautionSpinIn", cautionSpinPos);
                         prefEdit.commit();
@@ -129,6 +154,18 @@ public class SettingsActivity extends AppCompatActivity {
                         messageSpinPos = messageSpinner.getSelectedItemPosition();
                         Log.v(TAG, "crowd selection string is:" + messageSpinPos);
 
+                        switch(messageSpinPos){
+                            case 1:
+                                vibratePhone();
+                                break;
+                            case 2:
+                                sendPushNotification();
+                                break;
+                            case 3:
+                                //TODO:add glasses beep
+                                break;
+                        }
+
                         prefEdit.putInt("messageSpinIn", messageSpinPos);
                         prefEdit.commit();
 
@@ -159,6 +196,18 @@ public class SettingsActivity extends AppCompatActivity {
                     } else {
                         arrivedSpinPos = arrivedSpinner.getSelectedItemPosition();
                         Log.v(TAG, "crowd selection string is:" + arrivedSpinPos);
+
+                        switch(arrivedSpinPos){
+                            case 1:
+                                vibratePhone();
+                                break;
+                            case 2:
+                                sendPushNotification();
+                                break;
+                            case 3:
+                                //TODO:add glasses beep
+                                break;
+                        }
 
                         prefEdit.putInt("arrivedSpinIn", arrivedSpinPos);
                         prefEdit.commit();
@@ -256,7 +305,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onResume();
 
         Log.v(TAG, "SA onResume() is called");
-        loadSharedPref();
+        //loadSharedPref();
     }
 
     @Override
@@ -280,6 +329,12 @@ public class SettingsActivity extends AppCompatActivity {
 
         Log.v(TAG, "SA onRestart() is called");
 
+    }
+
+    protected void onDestroy(){
+        super.onDestroy();
+
+        Log.v(TAG,"SA onDestroy() is called");
     }
 
     //endregion application lifecycle methods
@@ -311,77 +366,46 @@ public class SettingsActivity extends AppCompatActivity {
         //region --assigning spinners--
         //assign spinner appropriate position - crowd
         switch(getCrowdSpinIn){
-            case 1:
+            case 99:
+                //do nothing
+                break;
+            default:
                 //do something
                 crowdSpinner.setSelection(crowdSpinPos, true);
-                vibratePhone();
                 break;
-            case 2:
-                //do something
-                crowdSpinner.setSelection(crowdSpinPos, true);
-                sendPushNotification();
-                break;
-            case 3:
-                //do something
-                crowdSpinner.setSelection(crowdSpinPos, true);
-                //TODO: beep glasses method insert here
-                break;
+
         }
 
         //assign spinner appropriate position - caution
         switch(getCautionSpinIn){
-            case 1:
-                //do something
-                cautionSpinner.setSelection(cautionSpinPos, true);
-                vibratePhone();
+            case 99:
+                //do nothing
                 break;
-            case 2:
+            default:
                 //do something
                 cautionSpinner.setSelection(cautionSpinPos, true);
-                sendPushNotification();
-                break;
-            case 3:
-                //do something
-                cautionSpinner.setSelection(cautionSpinPos, true);
-                //TODO: beep glasses method insert here
                 break;
         }
 
         //assign spinner appropriate position - message
         switch(getMessageSpinIn){
-            case 1:
-                //do something
-                messageSpinner.setSelection(messageSpinPos, true);
-                vibratePhone();
+            case 99:
+                //do nothing
                 break;
-            case 2:
+            default:
                 //do something
                 messageSpinner.setSelection(messageSpinPos, true);
-                sendPushNotification();
-                break;
-            case 3:
-                //do something
-                messageSpinner.setSelection(messageSpinPos, true);
-                //TODO: beep glasses method insert here
                 break;
         }
 
         //assign spinner appropriate position - arrived
         switch(getArrivedSpinIn){
-            case 1:
-                //do something
-                arrivedSpinner.setSelection(arrivedSpinPos, true);
-                vibratePhone();
+            case 99:
+                //do nothing
                 break;
-            case 2:
+            default:
                 //do something
                 arrivedSpinner.setSelection(arrivedSpinPos, true);
-                sendPushNotification();
-                break;
-            case 3:
-                //do something
-                arrivedSpinner.setSelection(arrivedSpinPos, true);
-                //TODO: beep glasses method insert here
                 break;
         }
         //endregion --assigning spinners--
@@ -459,6 +483,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void sendPushNotification(){
+        Log.v(TAG, "inside push notification method");
 
         NotificationChannel channel = new NotificationChannel("my notification", "my notification", NotificationManager.IMPORTANCE_HIGH);
         NotificationManager manager = getSystemService(NotificationManager.class);
