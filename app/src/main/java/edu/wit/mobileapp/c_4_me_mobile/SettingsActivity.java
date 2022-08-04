@@ -37,6 +37,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public SharedPreferences sharedPref;
     public SharedPreferences.Editor prefEdit;
+    public static boolean firstTime = true;
     //endregion vars
 
     @Override
@@ -45,73 +46,159 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         Log.v(TAG, "SA onCreate() is called");
 
-        //save button + shared pref initialization
+
+        //loadSharedPref();
+
+    }
+
+    //region application lifecycle methods
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Log.v(TAG, "SA onStart() is called");
+        //loadSharedPref();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.v(TAG, "SA onResume() is called");
+
+        //shared pref initialization
         sharedPref = getSharedPreferences(myPreferences, Context.MODE_PRIVATE);
         prefEdit = sharedPref.edit();
 
-        //region spinners
+        //region spinners init
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.OptionsTexts, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-            //region crowd spinner
-            crowdSpinner = (Spinner) findViewById(R.id.crowdOption);
-            crowdSpinner.setAdapter(spinnerAdapter);
+        crowdSpinner = (Spinner) findViewById(R.id.crowdOption);
+        crowdSpinner.setAdapter(spinnerAdapter);
+
+        cautionSpinner = findViewById(R.id.cautionOption);
+        cautionSpinner.setAdapter(spinnerAdapter);
+
+        messageSpinner = findViewById(R.id.messageOption);
+        messageSpinner.setAdapter(spinnerAdapter);
+
+        arrivedSpinner = findViewById(R.id.arrivedOption);
+        arrivedSpinner.setAdapter(spinnerAdapter);
+        //endregion spinners init
+
+        //region radio buttons data
+
+        //input value from radio buttons - location
+        locationRG = findViewById(R.id.radioGroup);
+        locationRG.setOnCheckedChangeListener((group, checkedId) -> {
+
+            //what was selected index - used internally
+            locationRBPos = locationRG.indexOfChild(findViewById(locationRG.getCheckedRadioButtonId()));
+            Log.v(TAG, "location index chosen: " + locationRBPos);
+            prefEdit.putInt("touchLocationIn", locationRBPos);
+            Log.v(TAG, "touchLocation saving .." + locationRBPos);
+
+            /*used to see what was selected -- testing purposes only
+            locationRadio = (RadioButton) locationRG.getChildAt(locationRBPos);
+            String selectedText = locationRadio.getText().toString();
+            //Log.v(TAG,"selectedText output: "+ selectedText);*/
+
+            prefEdit.commit();
+        });
+
+        //input value from radio buttons - message
+        messageRG = findViewById(R.id.radioGroup2);
+        messageRG.setOnCheckedChangeListener((group, checkedId) -> {
+
+            //what was selected index - used internally
+            messageRBPos = messageRG.indexOfChild(findViewById(messageRG.getCheckedRadioButtonId()));
+            Log.v(TAG, "message index chosen: " + messageRBPos);
+            prefEdit.putInt("touchMessageIn", messageRBPos);
+            Log.v(TAG, "touchMessageIn saving .." + messageRBPos);
+
+            /*used to see what was selected -- testing purposes only
+            messageRadio = (RadioButton) messageRG.getChildAt(messageRBPos);
+            String selectedText = messageRadio.getText().toString();
+            //Log.v(TAG,"selectedText output: "+ selectedText);*/
+
+            prefEdit.commit();
+        });
+
+        //input value from radio buttons - notes
+        notesRG = findViewById(R.id.radioGroup3);
+        notesRG.setOnCheckedChangeListener((group, checkedId) -> {
+
+            //what was selected index - used internally
+            notesRBPos = notesRG.indexOfChild(findViewById(notesRG.getCheckedRadioButtonId()));
+            Log.v(TAG, "notes index chosen: " + notesRBPos);
+            prefEdit.putInt("touchNotesIn", notesRBPos);
+            Log.v(TAG, "touchNotesIn saving .." + notesRBPos);
+
+            /*used to see what was selected -- testing purposes only
+            notesRadio = (RadioButton) notesRG.getChildAt(notesRBPos);
+            String selectedText = notesRadio.getText().toString();
+            //Log.v(TAG,"selectedText output: "+ selectedText);*/
+
+            prefEdit.commit();
+        });
+
+        //endregion radio buttons data
+
+        if (firstTime == true) {
+
+            //Log.v(TAG, "inside if statement where firstTime = true");
+
             crowdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-               @Override
-               public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
 
-                   if(parent.getItemAtPosition(position).equals("None")){
+                    if (parent.getItemAtPosition(position).equals("None")) {
                         //do nothing
-                   } else {
-                       crowdSpinPos = crowdSpinner.getSelectedItemPosition();
-                       Log.v(TAG, "crowd selection string is:" + crowdSpinPos);
+                    } else {
+                        crowdSpinPos = crowdSpinner.getSelectedItemPosition();
+                        Log.v(TAG, "crowd selection string is:" + crowdSpinPos);
 
-                       switch(crowdSpinPos){
-                           case 1:
-                               vibratePhone();
-                               break;
-                           case 2:
-                               sendPushNotification();
-                               break;
-                           case 3:
-                               //TODO:add glasses beep
-                               break;
-                       }
+                        switch (crowdSpinPos) {
+                            case 1:
+                                vibratePhone();
+                                break;
+                            case 2:
+                                sendPushNotification();
+                                break;
+                            case 3:
+                                //TODO:add glasses beep
+                                break;
+                        }
 
-                       prefEdit.putInt("crowdSpinIn", crowdSpinPos);
-                       prefEdit.commit();
+                        prefEdit.putInt("crowdSpinIn", crowdSpinPos);
+                        prefEdit.commit();
 
                        /*used to see what was selected -- testing purposes only
                        //crowdSpinIn = crowdSpinner.getSelectedItem().toString(); //input to string
                        //Log.v(TAG, "crowd selection string is:" + crowdSpinIn);*/
 
-                       //Toast.makeText(getApplicationContext(), "Saved Crowd Alert Changes", Toast.LENGTH_SHORT).show();
-                   }
-               }
+                        //Toast.makeText(getApplicationContext(), "Saved Crowd Alert Changes", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-               @Override
-               public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-               }
-           });
-
-            //endregion
-
-            //region caution spinner
-            cautionSpinner = findViewById(R.id.cautionOption);
-            cautionSpinner.setAdapter(spinnerAdapter);
+                }
+            });
             cautionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                    if(parent.getItemAtPosition(position).equals("None")){
+                    if (parent.getItemAtPosition(position).equals("None")) {
                         //do nothing
                     } else {
                         cautionSpinPos = cautionSpinner.getSelectedItemPosition();
                         Log.v(TAG, "caution selection string is:" + cautionSpinPos);
 
-                        switch(cautionSpinPos){
+                        switch (cautionSpinPos) {
                             case 1:
                                 vibratePhone();
                                 break;
@@ -139,22 +226,17 @@ public class SettingsActivity extends AppCompatActivity {
 
                 }
             });
-            //endregion
-
-            //region message spinner
-            messageSpinner = findViewById(R.id.messageOption);
-            messageSpinner.setAdapter(spinnerAdapter);
             messageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                    if(parent.getItemAtPosition(position).equals("None")){
+                    if (parent.getItemAtPosition(position).equals("None")) {
                         //do nothing
                     } else {
                         messageSpinPos = messageSpinner.getSelectedItemPosition();
                         Log.v(TAG, "crowd selection string is:" + messageSpinPos);
 
-                        switch(messageSpinPos){
+                        switch (messageSpinPos) {
                             case 1:
                                 vibratePhone();
                                 break;
@@ -182,22 +264,17 @@ public class SettingsActivity extends AppCompatActivity {
 
                 }
             });
-        //endregion
-
-            //region arrived spinner
-            arrivedSpinner = findViewById(R.id.arrivedOption);
-            arrivedSpinner.setAdapter(spinnerAdapter);
             arrivedSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                    if(parent.getItemAtPosition(position).equals("None")){
+                    if (parent.getItemAtPosition(position).equals("None")) {
                         //do nothing
                     } else {
                         arrivedSpinPos = arrivedSpinner.getSelectedItemPosition();
                         Log.v(TAG, "crowd selection string is:" + arrivedSpinPos);
 
-                        switch(arrivedSpinPos){
+                        switch (arrivedSpinPos) {
                             case 1:
                                 vibratePhone();
                                 break;
@@ -225,87 +302,94 @@ public class SettingsActivity extends AppCompatActivity {
 
                 }
             });
-            //endregion
 
-        //endregion
+            //loadSharedPref();
+            firstTime = false;
 
-        //region radio buttons data
+        } else {
 
-        //input value from radio buttons - location
-        locationRG = findViewById(R.id.radioGroup);
-        locationRG.setOnCheckedChangeListener((group, checkedId) -> {
+            //Log.v(TAG, "inside else statement where firstTime = false");
 
-            //what was selected index - used internally
-            locationRBPos = locationRG.indexOfChild(findViewById(locationRG.getCheckedRadioButtonId()));
-            Log.v(TAG,"location index chosen: "+ locationRBPos);
-            prefEdit.putInt("touchLocationIn", locationRBPos);
-            Log.v(TAG, "touchLocation saving .." + locationRBPos);
+             crowdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (parent.getItemAtPosition(position).equals("None")) {
+                        //do nothing
+                    } else {
+                        crowdSpinPos = crowdSpinner.getSelectedItemPosition();
+                        //Log.v(TAG, "crowd selection string is:" + crowdSpinPos);
 
-            /*used to see what was selected -- testing purposes only
-            locationRadio = (RadioButton) locationRG.getChildAt(locationRBPos);
-            String selectedText = locationRadio.getText().toString();
-            //Log.v(TAG,"selectedText output: "+ selectedText);*/
+                        prefEdit.putInt("crowdSpinIn", crowdSpinPos);
+                        prefEdit.commit();
 
-            prefEdit.commit();
-        });
+                    }
+                }
 
-        //input value from radio buttons - message
-        messageRG = findViewById(R.id.radioGroup2);
-        messageRG.setOnCheckedChangeListener((group, checkedId) -> {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            //what was selected index - used internally
-            messageRBPos = messageRG.indexOfChild(findViewById(messageRG.getCheckedRadioButtonId()));
-            Log.v(TAG,"message index chosen: "+ messageRBPos);
-            prefEdit.putInt("touchMessageIn", messageRBPos);
-            Log.v(TAG, "touchMessageIn saving .." + messageRBPos);
+                }
+            });
+             cautionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (parent.getItemAtPosition(position).equals("None")) {
+                        //do nothing
+                    } else {
+                        cautionSpinPos = cautionSpinner.getSelectedItemPosition();
+                        prefEdit.putInt("cautionSpinIn", cautionSpinPos);
+                        prefEdit.commit();
 
-            /*used to see what was selected -- testing purposes only
-            messageRadio = (RadioButton) messageRG.getChildAt(messageRBPos);
-            String selectedText = messageRadio.getText().toString();
-            //Log.v(TAG,"selectedText output: "+ selectedText);*/
+                    }
+                }
 
-            prefEdit.commit();
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-        //input value from radio buttons - notes
-        notesRG = findViewById(R.id.radioGroup3);
-        notesRG.setOnCheckedChangeListener((group, checkedId) -> {
+                }
+            });
+             messageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-            //what was selected index - used internally
-            notesRBPos = notesRG.indexOfChild(findViewById(notesRG.getCheckedRadioButtonId()));
-            Log.v(TAG,"notes index chosen: "+ notesRBPos);
-            prefEdit.putInt("touchNotesIn", notesRBPos);
-            Log.v(TAG, "touchNotesIn saving .." + notesRBPos);
+                    if (parent.getItemAtPosition(position).equals("None")) {
+                        //do nothing
+                    } else {
+                        messageSpinPos = messageSpinner.getSelectedItemPosition();
+                        Log.v(TAG, "crowd selection string is:" + messageSpinPos);
 
-            /*used to see what was selected -- testing purposes only
-            notesRadio = (RadioButton) notesRG.getChildAt(notesRBPos);
-            String selectedText = notesRadio.getText().toString();
-            //Log.v(TAG,"selectedText output: "+ selectedText);*/
+                        prefEdit.putInt("messageSpinIn", messageSpinPos);
+                        prefEdit.commit();
+                    }
+                }
 
-            prefEdit.commit();
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-        //endregion radio buttons data
+                }
+            });
+             arrivedSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    if (parent.getItemAtPosition(position).equals("None")) {
+                        //do nothing
+                    } else {
+                        arrivedSpinPos = arrivedSpinner.getSelectedItemPosition();
+                        prefEdit.putInt("arrivedSpinIn", arrivedSpinPos);
+                        prefEdit.commit();
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+        }
 
         loadSharedPref();
-
-    }
-
-    //region application lifecycle methods
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Log.v(TAG, "SA onStart() is called");
-        //loadSharedPref();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        Log.v(TAG, "SA onResume() is called");
-        //loadSharedPref();
     }
 
     @Override
