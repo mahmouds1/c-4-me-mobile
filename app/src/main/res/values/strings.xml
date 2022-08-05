@@ -13,6 +13,36 @@
     <string name="connectivityTitle">Connectivity</string>
     <string name="settingsTitle">Settings</string>
 
+    //settings activity titles
+    <string name="alertTitle">Alerts</string>
+    <string name="touchpadGesturesTitle">Touchpad &amp; Gestures</string>
+
+    //alerts strings
+    <string name="crowdTitle">Crowd Alert</string>
+    <string name="cautionTitle">Caution Alert</string>
+    <string name="messageTitle">Message Alert</string>
+    <string name="arrivedTitle">Arrived Alert</string>
+
+    <string-array name="OptionsTexts">
+        <item>None</item>
+        <item>Vibrate Phone</item>
+        <item>Speaker Notification</item>
+        <item>Glasses Beep</item>
+    </string-array>
+
+    //touchpad strings
+    <string name="locationQTitle">Where am i?</string>
+    <string name="messagesQTitle">Do I have any messages?</string>
+    <string name="notesQTitle">Pull up my notes.</string>
+
+
+    //touchpad options
+    <string name="touchpadOptionTap">Tap</string>
+    <string name="touchpadOptionSwipe">Swipe</string>
+    <string name="touchpadOptionPressHold">Press &amp; Hold</string>
+
+
+
     // Notes activity related
     <string name="create_new_note_button_text">New Note</string>
 
@@ -28,4 +58,5 @@
 
     // Edit note activity related
     <string name="edit_note_submit_btn_text">Submit Changes</string>
+
 </resources>
