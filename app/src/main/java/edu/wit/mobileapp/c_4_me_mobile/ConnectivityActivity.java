@@ -228,11 +228,15 @@ public class ConnectivityActivity extends AppCompatActivity {
     // otherwise, request permission function is called
     private void startScanPermission() {
 <<<<<<< HEAD
+<<<<<<< HEAD
         // Check if the permission has been granted
 =======
         // BEGIN_INCLUDE(startCamera)
         // Check if the Camera permission has been granted
 >>>>>>> f821dcb (connectivity works, troubleshooting data retrieval and making UI more fluid)
+=======
+        // Check if the permission has been granted
+>>>>>>> 5a05cb0 (small changes)
         String [] PERMISSIONS = {
                 Manifest.permission.BLUETOOTH_CONNECT,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -241,10 +245,14 @@ public class ConnectivityActivity extends AppCompatActivity {
             if (ActivityCompat.checkSelfPermission(this, permission )
                     == PackageManager.PERMISSION_GRANTED) {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 // Permission is already available
 =======
                 // Permission is already available, start camera preview
 >>>>>>> f821dcb (connectivity works, troubleshooting data retrieval and making UI more fluid)
+=======
+                // Permission is already available
+>>>>>>> 5a05cb0 (small changes)
                 Snackbar.make(mLayout,
                         "Scan started",
                         Snackbar.LENGTH_SHORT).show();
@@ -257,9 +265,12 @@ public class ConnectivityActivity extends AppCompatActivity {
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         // END_INCLUDE(startCamera)
 >>>>>>> f821dcb (connectivity works, troubleshooting data retrieval and making UI more fluid)
+=======
+>>>>>>> 5a05cb0 (small changes)
     }
 
     // is called by ActivityCompat.requestPermissions
