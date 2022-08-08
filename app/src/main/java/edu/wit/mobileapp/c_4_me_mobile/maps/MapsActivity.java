@@ -112,7 +112,7 @@ public class MapsActivity extends FragmentActivity implements
                     mMap.addMarker(new MarkerOptions().position(latLng).title(location));
 
                     // move camera to location
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                 }
                 return false;
             }
