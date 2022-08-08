@@ -166,6 +166,7 @@ public class ConnectivityActivity extends AppCompatActivity {
                     SensorData sensorData = SensorDataHelper.genSensorData(appData);
 
                     // add UI updater here
+                    // changeUI(sensorData);
                 });
                 break;
             case ConnectState.STATE_DISCONNECTED:
@@ -176,6 +177,19 @@ public class ConnectivityActivity extends AppCompatActivity {
                 stateInfo = "no drip";
                 break;
         }
+    }
+
+
+    private void changeUI(SensorData data) {
+
+        String batteryPercent = data.getBattPercent() + "";
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // handle updating text
+            }
+        });
     }
 
 
