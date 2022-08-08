@@ -31,6 +31,7 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -56,6 +57,8 @@ public class MapsActivity extends FragmentActivity implements
     LocationRequest mLocationRequest;
     Location mLastLocation;
     private GoogleMap mMap;
+    private Marker  marker = null;
+
 
     SearchView searchView;
 
@@ -90,10 +93,10 @@ public class MapsActivity extends FragmentActivity implements
             public boolean onQueryTextSubmit(String query) {
                 // User is now searching
                 isSearch = true;
+                String oldLocation = "";
 
                 // Grab name of location
                 String location = searchView.getQuery().toString();
-
                 // List to store all address related to query
                 List<Address> addressList = null;
 
@@ -105,14 +108,31 @@ public class MapsActivity extends FragmentActivity implements
                     } catch (IOException e){
                         e.printStackTrace();
                     }
-                    // Collect latitude and longitude of queried location
-                    LatLng latLng = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
 
-                    // Create a marker for the queried location
-                    mMap.addMarker(new MarkerOptions().position(latLng).title(location));
+                    if (addressList.isEmpty() == false){
+                        // Collect latitude and longitude of queried location
+                        LatLng latLng = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
 
-                    // move camera to location
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                        // Grab known name of the location
+                        String locationName = addressList.get(0).getFeatureName();
+
+                        // Hide old marker
+                        if (marker != null){
+                            marker.setVisible(false);
+                        }
+
+                        if (isNumeric(locationName)){
+                            locationName = "";
+                        }
+
+                        // Create a marker for the queried location
+                        marker = mMap.addMarker(new MarkerOptions().position(latLng).title(locationName));
+
+                        // move camera to location
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                    } else {
+                        Toast.makeText(MapsActivity.this, "Location does not exist", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 return false;
             }
@@ -191,7 +211,7 @@ public class MapsActivity extends FragmentActivity implements
                 // Check to see if the user is searching
                 if (!isSearch){
                     //move map camera
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 }
             }
         }
@@ -255,5 +275,17 @@ public class MapsActivity extends FragmentActivity implements
     private void showMissingPermissionError() {
         PermissionUtils.PermissionDeniedDialog
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
+    }
+
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 }
