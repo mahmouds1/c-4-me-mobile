@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import edu.wit.mobileapp.c_4_me_mobile.maps.MapsActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     static String TAG = "myApp";
