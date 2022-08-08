@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.wit.mobileapp.c_4_me_mobile.maps.MapsActivity;
+
 
 public class MainActivity extends AppCompatActivity {
 
