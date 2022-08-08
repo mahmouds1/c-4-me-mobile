@@ -37,6 +37,7 @@ public class ConnectivityActivity extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_BSCAN = 9;
     private static final int PERMISSION_REQUEST_AFL = 10;
+    private static final int PERMISSION_REQUEST_BCON = 8;
 
 
     // adapter
@@ -72,12 +73,14 @@ public class ConnectivityActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.connectivity_activity);
+
+        getSupportActionBar().setTitle("Connectivity");
         mLayout = findViewById(R.id.ll_search);
 
         EAdapter = new AudioBluetoothApi();
         DInfo = new DeviceInfo();
 
-        textView = (TextView) findViewById(R.id.textView2);
+        //textView = (TextView) findViewById(R.id.textView2);
         scan = (Button) (findViewById(R.id.btn_scan));
         connect = (Button) (findViewById(R.id.btn_connect));
 
@@ -86,10 +89,17 @@ public class ConnectivityActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                  // start scan
-                startScanPermission();
-                // once scan completes, scan button disappears
-                scan.setVisibility(View.GONE);
 
+                boolean check = startScanPermission();
+                if (check) {
+                    startSearch();
+                    scan.setEnabled(false);
+                    connect.setEnabled(true);
+                    Toast.makeText(ConnectivityActivity.this, "Device Found", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(ConnectivityActivity.this, "Scanning Failed...", Toast.LENGTH_SHORT).show();
+                }
 
             }
 
@@ -103,24 +113,25 @@ public class ConnectivityActivity extends AppCompatActivity {
                 // need to make connect and scan buttons more responsive and fluid
                 // should only have user scan for devices once at the top and make it look nice
                 // then two connect buttons followed by the name of devices and their battery percentages
-                Toast.makeText(getApplicationContext(),"Connecting...",Toast.LENGTH_LONG).show();
-                try {
-                    Thread.sleep(2000); //1000 milliseconds is one second.
-                }
-                catch (InterruptedException e)
-                {
-                    e.printStackTrace();
-                }
+
                 connect();
                 try {
                     Thread.sleep(2000); //1000 milliseconds is one second.
+                    Toast.makeText(getApplicationContext(),"Connecting...",Toast.LENGTH_LONG).show();
                 }
                 catch (InterruptedException e)
                 {
                     e.printStackTrace();
                 }
-                connect.setText("Connected");
-                connect.setEnabled(false);
+
+                if (AudioBluetoothApi.getInstance().isConnected(DInfo.getDeviceBtMac())) {
+                    connect.setText("Connected");
+                    connect.setEnabled(false);
+                    Toast.makeText(ConnectivityActivity.this, "Successfully Connected", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ConnectivityActivity.this, "Connection Failed..Retry", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });
@@ -226,12 +237,13 @@ public class ConnectivityActivity extends AppCompatActivity {
     // initializes bluetooth with context
     // startSearch() method is called
     // otherwise, request permission function is called
-    private void startScanPermission() {
+    private boolean startScanPermission() {
 
-
+        boolean flag = false;
         String [] PERMISSIONS = {
                 Manifest.permission.BLUETOOTH_CONNECT,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.BLUETOOTH_CONNECT
         };
         for (String permission : PERMISSIONS) {
             if (ActivityCompat.checkSelfPermission(this, permission )
@@ -241,14 +253,18 @@ public class ConnectivityActivity extends AppCompatActivity {
                         "Scan started",
                         Snackbar.LENGTH_SHORT).show();
                 initBluetooth(getContext());
-                startSearch();
+                flag = true;
+                // wait to start search after
+
             } else {
                 // Permission is missing and must be requested.
                 requestPermission();
             }
+
+
         }
 
-
+        return flag;
     }
 
     // is called by ActivityCompat.requestPermissions
@@ -257,19 +273,17 @@ public class ConnectivityActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == PERMISSION_REQUEST_BSCAN || requestCode == PERMISSION_REQUEST_AFL)
+        if (requestCode == PERMISSION_REQUEST_BSCAN || requestCode == PERMISSION_REQUEST_AFL || requestCode == PERMISSION_REQUEST_BCON)
             // Request for bletoothscanner
-            if (grantResults.length == 2 && (grantResults[0] == PackageManager.PERMISSION_GRANTED) && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length ==  3 && (grantResults[0] == PackageManager.PERMISSION_GRANTED) && grantResults[1] == PackageManager.PERMISSION_GRANTED
+            && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(ConnectivityActivity.this,"Requesting Permissions",Toast.LENGTH_SHORT).show();
 
-                Snackbar.make(mLayout, "Request ",
-                                Snackbar.LENGTH_SHORT)
-                        .show();
 
             } else {
                 // Permission request was denied.
-                Snackbar.make(mLayout, "denied",
-                                Snackbar.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(ConnectivityActivity.this,"Permissions Denied",Toast.LENGTH_SHORT).show();
+
             }
         }
 
@@ -290,7 +304,7 @@ public class ConnectivityActivity extends AppCompatActivity {
                     // Request the permission
                     //ActivityCompat.requestPermissions();
                     ActivityCompat.requestPermissions(ConnectivityActivity.this,
-                            new String[]{Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.ACCESS_FINE_LOCATION},
+                            new String[]{Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH_CONNECT},
                             PERMISSION_REQUEST_AFL);
                 }
             }).show();
@@ -299,7 +313,7 @@ public class ConnectivityActivity extends AppCompatActivity {
             Snackbar.make(mLayout, "denied", Snackbar.LENGTH_SHORT).show();
             // Request the permission. The result will be received in onRequestPermissionResult().
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_AFL);
+                    new String[]{Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH_SCAN}, PERMISSION_REQUEST_AFL);
         }
     }
 

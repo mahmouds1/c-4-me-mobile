@@ -23,12 +23,7 @@
         android:theme="@style/Theme.C4umemobile"
         tools:targetApi="31">
 
-<<<<<<< HEAD
-        <activity
-            android:name=".TestConnectivity"
-            android:exported="false" />
-=======
->>>>>>> 5a05cb0 (small changes)
+
         <activity
             android:name=".ConnectivityActivity"
             android:exported="false" />
