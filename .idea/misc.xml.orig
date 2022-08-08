@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Repos/c-4-me-mobile/app/src/main/res/layout/activity_main.xml" value="0.3446557971014493" />
+<<<<<<< HEAD
+        <entry key="..\:/Repos/c-4-me-mobile/app/src/main/res/layout/activity_maps.xml" value="0.3446557971014493" />
+        <entry key="..\:/Users/aiman/Desktop/MobileHCLComp/c-4-me-mobile/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/aiman/Desktop/MobileHCLComp/c-4-me-mobile/app/src/main/res/layout/activity_maps.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/aiman/Desktop/MobileHCLComp/c-4-me-mobile/app/src/main/res/layout/activity_test_connectivity.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/aiman/Desktop/MobileHCLComp/c-4-me-mobile/app/src/main/res/layout/connectivity_activity.xml" value="0.22" />
+        <entry key="..\:/Users/aiman/Desktop/MobileHCLComp/c-4-me-mobile/app/src/main/res/layout/settings_activity.xml" value="0.1875" />
+        <entry key="..\:/Users/mahmouds/Documents/GITHUB/c-4-me-mobile/app/src/main/res/layout/activity_main.xml" value="0.275" />
+        <entry key="..\:/Users/mahmouds/Documents/GITHUB/c-4-me-mobile/app/src/main/res/layout/settings_activity.xml" value="0.14492753623188406" />
+=======
+        <entry key="..\:/Users/mahmouds/OneDrive - Wentworth Institute of Technology/Documents/GitHub/c-4-me-mobile/app/src/main/res/layout/activity_main.xml" value="0.2128623188405797" />
+>>>>>>> main
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
