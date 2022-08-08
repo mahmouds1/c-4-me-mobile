@@ -35,28 +35,31 @@ import com.huawei.audiobluetooth.utils.LogUtils;
 public class ConnectivityActivity extends AppCompatActivity {
 
 
+    // permission request IDs
+    private static final int PERMISSION_REQUEST_BCON = 8;
     private static final int PERMISSION_REQUEST_BSCAN = 9;
     private static final int PERMISSION_REQUEST_AFL = 10;
-    private static final int PERMISSION_REQUEST_BCON = 8;
 
 
-    // adapter
+
+    // TAG for debugging purposes
+    private static final String TAG = "EYEWEAR DEBUG/INFO";
+
+
+    // Eyewear Bluetooth Adapter
     AudioBluetoothApi EAdapter;
 
-    // Bluetooth Manager
-    BluetoothManager DManager;
-
-    // mac address
+    // MAC address
     private String mac;
 
+
+    // UI Components
     private View mLayout;
-    // UI
     Button connect;
     Button scan;
-
     TextView textView;
 
-    // Device Info
+    // Device Info (where mac address is saved)
     DeviceInfo DInfo;
 
 
@@ -77,6 +80,8 @@ public class ConnectivityActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Connectivity");
         mLayout = findViewById(R.id.ll_search);
 
+        getSupportActionBar().setTitle("Connectivity");
+
         EAdapter = new AudioBluetoothApi();
         DInfo = new DeviceInfo();
 
@@ -84,11 +89,11 @@ public class ConnectivityActivity extends AppCompatActivity {
         scan = (Button) (findViewById(R.id.btn_scan));
         connect = (Button) (findViewById(R.id.btn_connect));
 
-
+        // when clicked starts scan
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 // start scan
+
 
                 boolean check = startScanPermission();
                 if (check) {
@@ -109,11 +114,6 @@ public class ConnectivityActivity extends AppCompatActivity {
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                // need to make connect and scan buttons more responsive and fluid
-                // should only have user scan for devices once at the top and make it look nice
-                // then two connect buttons followed by the name of devices and their battery percentages
-
                 connect();
                 try {
                     Thread.sleep(2000); //1000 milliseconds is one second.
@@ -136,21 +136,12 @@ public class ConnectivityActivity extends AppCompatActivity {
             }
         });
 
-
-        // battery updater here?
-
-
-
-
-
     }
 
 
     private void connect() {
         AudioBluetoothApi.getInstance().connect(DInfo.deviceBtMac, state -> {
-            //LogUtils.i("adasf", "onConnectStateChanged state = " + state);
             BluetoothDevice device = BluetoothManager.getInstance().getBtDevice(DInfo.deviceBtMac);
-
             onConnectStateChanged(device, state);
         });
 
@@ -173,13 +164,13 @@ public class ConnectivityActivity extends AppCompatActivity {
                 AudioBluetoothApi.getInstance().registerListener(device.getAddress(), receiveDataEvent -> {
                     byte[] appData = receiveDataEvent.getAppData();
                     SensorData sensorData = SensorDataHelper.genSensorData(appData);
+
+                    // add UI updater here
                 });
                 break;
             case ConnectState.STATE_DISCONNECTED:
                 stateInfo = "DISCONNECTED";
-
                 // add unregisterlistener here
-
                 break;
             default:
                 stateInfo = "no drip";
@@ -188,19 +179,19 @@ public class ConnectivityActivity extends AppCompatActivity {
     }
 
 
-    // initializes Api Adapter
+    // initializes Eyewear Adapter
     // takes app context as parameter
     private void initBluetooth(Context context) {
         try {
             AudioBluetoothApi.getInstance().init(context, new IInitResultCallBack() {
                 @Override
                 public void onResult(boolean result) {
-                    LogUtils.i("adf", "onResult result = " + result);
+                    LogUtils.i(TAG, "onResult result = " + result);
                 }
 
                 @Override
                 public void onFinish() {
-                    LogUtils.i("adf", "onFinish");
+                    LogUtils.i(TAG, "onFinish");
                 }
             });
         } catch (Exception e) {
@@ -215,7 +206,7 @@ public class ConnectivityActivity extends AppCompatActivity {
         AudioBluetoothApi.getInstance().searchDevice(new DiscoveryHelper.FoundCallback() {
             @Override
             public void onFound(DeviceInfo deviceInfo) {
-                LogUtils.d("df", "startSearch Found device: " + deviceInfo);
+                LogUtils.d(TAG, "startSearch Found device: " + deviceInfo);
 
                 DInfo.deviceBtMac = deviceInfo.getDeviceBtMac();
 
@@ -224,7 +215,7 @@ public class ConnectivityActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 AudioBluetoothApi.getInstance().stopSearch();
-                LogUtils.i("df", "searchDevice onFinish");
+                LogUtils.i(TAG, "searchDevice onFinish");
             }
         });
     }
@@ -274,7 +265,6 @@ public class ConnectivityActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == PERMISSION_REQUEST_BSCAN || requestCode == PERMISSION_REQUEST_AFL || requestCode == PERMISSION_REQUEST_BCON)
-            // Request for bletoothscanner
             if (grantResults.length ==  3 && (grantResults[0] == PackageManager.PERMISSION_GRANTED) && grantResults[1] == PackageManager.PERMISSION_GRANTED
             && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(ConnectivityActivity.this,"Requesting Permissions",Toast.LENGTH_SHORT).show();
@@ -288,7 +278,6 @@ public class ConnectivityActivity extends AppCompatActivity {
         }
 
 
-    //
     private void requestPermission() {
         // Permission has not been granted and must be requested.
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -310,7 +299,7 @@ public class ConnectivityActivity extends AppCompatActivity {
             }).show();
 
         } else {
-            Snackbar.make(mLayout, "denied", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(mLayout, "Denied: Check Permissions", Snackbar.LENGTH_SHORT).show();
             // Request the permission. The result will be received in onRequestPermissionResult().
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH_SCAN}, PERMISSION_REQUEST_AFL);
