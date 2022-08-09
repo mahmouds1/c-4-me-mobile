@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //intent for activity switch
                 Intent connectivityIntent = new Intent();
-                //connectivityIntent.setClass(MainActivity.this, ConnectivityActivity.class);
+                connectivityIntent.setClass(MainActivity.this, ConnectivityActivity.class);
 
                 startActivity(connectivityIntent);
             }
