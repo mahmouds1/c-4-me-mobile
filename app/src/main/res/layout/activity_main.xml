@@ -8,50 +8,69 @@
    <!-- tools:context=".MainActivity">-->
 
 
-    <Button
-        android:id="@+id/notesSwitchButton"
-        android:layout_width="152dp"
-        android:layout_height="50dp"
-        android:text="@string/notesTitle"
+    <TextView
+        android:layout_width="320dp"
+        android:layout_height="69dp"
+        android:text="WELCOME!"
+        android:gravity="center"
+        android:textSize="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.469"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.39" />
+        app:layout_constraintVertical_bias="0.156" />
+
+    <Button
+        android:id="@+id/notesSwitchButton"
+        android:layout_width="320dp"
+        android:layout_height="69dp"
+        android:text="@string/notesTitle"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.376" />
 
     <Button
         android:id="@+id/mapsSwitchButton"
-        android:layout_width="153dp"
-        android:layout_height="51dp"
+        android:layout_width="320dp"
+        android:layout_height="69dp"
         android:text="@string/mapsTitle"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.483" />
+        app:layout_constraintVertical_bias="0.528" />
 
     <Button
         android:id="@+id/connectivitySwitchButton"
-        android:layout_width="152dp"
-        android:layout_height="51dp"
+        android:layout_width="320dp"
+        android:layout_height="69dp"
         android:text="@string/connectivityTitle"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.579" />
+        app:layout_constraintVertical_bias="0.682" />
 
     <Button
         android:id="@+id/settingsSwitchButton"
-        android:layout_width="153dp"
-        android:layout_height="51dp"
+        android:layout_width="320dp"
+        android:layout_height="69dp"
         android:text="@string/settingsTitle"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.669" />
+        app:layout_constraintVertical_bias="0.833" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
