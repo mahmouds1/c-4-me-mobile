@@ -5,7 +5,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
 import android.os.VibrationEffect;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +22,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    //region vars
+    //region declaring vars needed throughout activity
     static String TAG = "myApp";
     public static final String myPreferences = "myPref";
     public Vibrator vibrator;
@@ -45,7 +43,6 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         Log.v(TAG, "SA onCreate() is called");
-        //loadSharedPref();
 
     }
 
@@ -55,7 +52,6 @@ public class SettingsActivity extends AppCompatActivity {
         super.onStart();
 
         Log.v(TAG, "SA onStart() is called");
-        //loadSharedPref();
     }
 
     @Override
@@ -85,7 +81,7 @@ public class SettingsActivity extends AppCompatActivity {
         arrivedSpinner.setAdapter(spinnerAdapter);
         //endregion spinners init
 
-        //region radio buttons data
+        //region radio buttons init data
 
         //input value from radio buttons - location
         locationRG = findViewById(R.id.radioGroup);
@@ -93,18 +89,9 @@ public class SettingsActivity extends AppCompatActivity {
 
             //what was selected index - used internally
             locationRBPos = locationRG.indexOfChild(findViewById(locationRG.getCheckedRadioButtonId()));
-            Log.v(TAG, "location index chosen: " + locationRBPos);
             prefEdit.putInt("touchLocationIn", locationRBPos);
-            Log.v(TAG, "touchLocation saving .." + locationRBPos);
-
-            /*used to see what was selected -- testing purposes only
-            locationRadio = (RadioButton) locationRG.getChildAt(locationRBPos);
-            String selectedText = locationRadio.getText().toString();
-            //Log.v(TAG,"selectedText output: "+ selectedText);*/
-
             prefEdit.commit();
 
-            Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show();
         });
 
         //input value from radio buttons - message
@@ -113,17 +100,8 @@ public class SettingsActivity extends AppCompatActivity {
 
             //what was selected index - used internally
             messageRBPos = messageRG.indexOfChild(findViewById(messageRG.getCheckedRadioButtonId()));
-            Log.v(TAG, "message index chosen: " + messageRBPos);
             prefEdit.putInt("touchMessageIn", messageRBPos);
-            Log.v(TAG, "touchMessageIn saving .." + messageRBPos);
-
-            /*used to see what was selected -- testing purposes only
-            messageRadio = (RadioButton) messageRG.getChildAt(messageRBPos);
-            String selectedText = messageRadio.getText().toString();
-            //Log.v(TAG,"selectedText output: "+ selectedText);*/
-
             prefEdit.commit();
-            Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show();
         });
 
         //input value from radio buttons - notes
@@ -132,24 +110,16 @@ public class SettingsActivity extends AppCompatActivity {
 
             //what was selected index - used internally
             notesRBPos = notesRG.indexOfChild(findViewById(notesRG.getCheckedRadioButtonId()));
-            Log.v(TAG, "notes index chosen: " + notesRBPos);
             prefEdit.putInt("touchNotesIn", notesRBPos);
-            Log.v(TAG, "touchNotesIn saving .." + notesRBPos);
-
-            /*used to see what was selected -- testing purposes only
-            notesRadio = (RadioButton) notesRG.getChildAt(notesRBPos);
-            String selectedText = notesRadio.getText().toString();
-            //Log.v(TAG,"selectedText output: "+ selectedText);*/
-
             prefEdit.commit();
-            Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show();
         });
 
         //endregion radio buttons data
 
+        //if statements to check whether it was the first time to enter page or not - used for the switch haptic feedback (for spinners) statement
         if (firstTime == true) {
 
-            Log.v(TAG, "inside if statement where firstTime = true");
+            //Log.v(TAG, "inside if statement where firstTime = true");
 
             crowdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -160,7 +130,6 @@ public class SettingsActivity extends AppCompatActivity {
                         //do nothing
                     } else {
                         crowdSpinPos = crowdSpinner.getSelectedItemPosition();
-                        Log.v(TAG, "crowd selection string is:" + crowdSpinPos);
 
                         switch (crowdSpinPos) {
                             case 1:
@@ -176,12 +145,6 @@ public class SettingsActivity extends AppCompatActivity {
 
                         prefEdit.putInt("crowdSpinIn", crowdSpinPos);
                         prefEdit.commit();
-
-                       /*used to see what was selected -- testing purposes only
-                       //crowdSpinIn = crowdSpinner.getSelectedItem().toString(); //input to string
-                       //Log.v(TAG, "crowd selection string is:" + crowdSpinIn);*/
-
-                        //Toast.makeText(getApplicationContext(), "Saved Crowd Alert Changes", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -198,7 +161,6 @@ public class SettingsActivity extends AppCompatActivity {
                         //do nothing
                     } else {
                         cautionSpinPos = cautionSpinner.getSelectedItemPosition();
-                        Log.v(TAG, "caution selection string is:" + cautionSpinPos);
 
                         switch (cautionSpinPos) {
                             case 1:
@@ -215,11 +177,6 @@ public class SettingsActivity extends AppCompatActivity {
                         prefEdit.putInt("cautionSpinIn", cautionSpinPos);
                         prefEdit.commit();
 
-                        /*used to see what was selected -- testing purposes only
-                        //cautionSpinIn = cautionSpinner.getSelectedItem().toString(); //input to string
-                        //Log.v(TAG, "caution selection string is:" + cautionSpinIn);*/
-
-                        //Toast.makeText(getApplicationContext(), "Saved Crowd Alert Changes", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -236,7 +193,6 @@ public class SettingsActivity extends AppCompatActivity {
                         //do nothing
                     } else {
                         messageSpinPos = messageSpinner.getSelectedItemPosition();
-                        Log.v(TAG, "crowd selection string is:" + messageSpinPos);
 
                         switch (messageSpinPos) {
                             case 1:
@@ -252,12 +208,6 @@ public class SettingsActivity extends AppCompatActivity {
 
                         prefEdit.putInt("messageSpinIn", messageSpinPos);
                         prefEdit.commit();
-
-                        /*used to see what was selected -- testing purposes only
-                        //messageSpinIn = messageSpinner.getSelectedItem().toString(); //input to string
-                        //Log.v(TAG, "crowd selection string is:" + messageSpinIn);*/
-
-                        //Toast.makeText(getApplicationContext(), "Saved Crowd Alert Changes", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -274,7 +224,6 @@ public class SettingsActivity extends AppCompatActivity {
                         //do nothing
                     } else {
                         arrivedSpinPos = arrivedSpinner.getSelectedItemPosition();
-                        Log.v(TAG, "crowd selection string is:" + arrivedSpinPos);
 
                         switch (arrivedSpinPos) {
                             case 1:
@@ -290,12 +239,6 @@ public class SettingsActivity extends AppCompatActivity {
 
                         prefEdit.putInt("arrivedSpinIn", arrivedSpinPos);
                         prefEdit.commit();
-
-                        /*used to see what was selected -- testing purposes only
-                        //arrivedSpinIn = arrivedSpinner.getSelectedItem().toString(); //input to string
-                        //Log.v(TAG, "crowd selection string is:" + messageSpinIn);*/
-
-                        //Toast.makeText(getApplicationContext(), "Saved Crowd Alert Changes", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -305,62 +248,11 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-            locationRG.setOnCheckedChangeListener((group, checkedId) -> {
-
-                //what was selected index - used internally
-                locationRBPos = locationRG.indexOfChild(findViewById(locationRG.getCheckedRadioButtonId()));
-                Log.v(TAG, "location index chosen: " + locationRBPos);
-                prefEdit.putInt("touchLocationIn", locationRBPos);
-                Log.v(TAG, "touchLocation saving .." + locationRBPos);
-
-            /*used to see what was selected -- testing purposes only
-            locationRadio = (RadioButton) locationRG.getChildAt(locationRBPos);
-            String selectedText = locationRadio.getText().toString();
-            //Log.v(TAG,"selectedText output: "+ selectedText);*/
-
-                prefEdit.commit();
-
-                Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show();
-            });
-            messageRG.setOnCheckedChangeListener((group, checkedId) -> {
-
-                //what was selected index - used internally
-                messageRBPos = messageRG.indexOfChild(findViewById(messageRG.getCheckedRadioButtonId()));
-                Log.v(TAG, "message index chosen: " + messageRBPos);
-                prefEdit.putInt("touchMessageIn", messageRBPos);
-                Log.v(TAG, "touchMessageIn saving .." + messageRBPos);
-
-            /*used to see what was selected -- testing purposes only
-            messageRadio = (RadioButton) messageRG.getChildAt(messageRBPos);
-            String selectedText = messageRadio.getText().toString();
-            //Log.v(TAG,"selectedText output: "+ selectedText);*/
-
-                prefEdit.commit();
-                Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show();
-            });
-            notesRG.setOnCheckedChangeListener((group, checkedId) -> {
-
-                //what was selected index - used internally
-                notesRBPos = notesRG.indexOfChild(findViewById(notesRG.getCheckedRadioButtonId()));
-                Log.v(TAG, "notes index chosen: " + notesRBPos);
-                prefEdit.putInt("touchNotesIn", notesRBPos);
-                Log.v(TAG, "touchNotesIn saving .." + notesRBPos);
-
-            /*used to see what was selected -- testing purposes only
-            notesRadio = (RadioButton) notesRG.getChildAt(notesRBPos);
-            String selectedText = notesRadio.getText().toString();
-            //Log.v(TAG,"selectedText output: "+ selectedText);*/
-
-                prefEdit.commit();
-                Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show();
-            });
-
-            //loadSharedPref();
             firstTime = false;
 
         } else {
 
-            Log.v(TAG, "inside else statement where firstTime = false");
+            //Log.v(TAG, "inside else statement where firstTime = false");
 
              crowdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -369,11 +261,8 @@ public class SettingsActivity extends AppCompatActivity {
                         //do nothing
                     } else {
                         crowdSpinPos = crowdSpinner.getSelectedItemPosition();
-                        //Log.v(TAG, "crowd selection string is:" + crowdSpinPos);
-
                         prefEdit.putInt("crowdSpinIn", crowdSpinPos);
                         prefEdit.commit();
-
                     }
                 }
 
@@ -408,8 +297,6 @@ public class SettingsActivity extends AppCompatActivity {
                         //do nothing
                     } else {
                         messageSpinPos = messageSpinner.getSelectedItemPosition();
-                        Log.v(TAG, "crowd selection string is:" + messageSpinPos);
-
                         prefEdit.putInt("messageSpinIn", messageSpinPos);
                         prefEdit.commit();
                     }
@@ -439,29 +326,6 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-            locationRG.setOnCheckedChangeListener((group, checkedId) -> {
-
-                //what was selected index - used internally
-                locationRBPos = locationRG.indexOfChild(findViewById(locationRG.getCheckedRadioButtonId()));
-                prefEdit.putInt("touchLocationIn", locationRBPos);
-                prefEdit.commit();
-
-            });
-            messageRG.setOnCheckedChangeListener((group, checkedId) -> {
-
-                //what was selected index - used internally
-                messageRBPos = messageRG.indexOfChild(findViewById(messageRG.getCheckedRadioButtonId()));
-                prefEdit.putInt("touchMessageIn", messageRBPos);
-                prefEdit.commit();
-            });
-            notesRG.setOnCheckedChangeListener((group, checkedId) -> {
-
-                    //what was selected index - used internally
-                    notesRBPos = notesRG.indexOfChild(findViewById(notesRG.getCheckedRadioButtonId()));
-                    prefEdit.putInt("touchNotesIn", notesRBPos);
-                    prefEdit.commit();
-                });
-
         }
 
         loadSharedPref();
@@ -490,6 +354,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    @Override
     protected void onDestroy(){
         super.onDestroy();
 
@@ -498,8 +363,11 @@ public class SettingsActivity extends AppCompatActivity {
 
     //endregion application lifecycle methods
 
+    /**
+     * method to laoad any shared preferences that were saved throughout the activity in previous sessions
+     */
     public void loadSharedPref(){
-        Log.v(TAG, "loadSharedPref is called");
+        //Log.v(TAG, "loadSharedPref is called");
         SharedPreferences sharedPref = getSharedPreferences(myPreferences, Context.MODE_PRIVATE);
 
         //get spinner choices
@@ -508,19 +376,11 @@ public class SettingsActivity extends AppCompatActivity {
         int getMessageSpinIn = sharedPref.getInt("messageSpinIn", 99);
         int getArrivedSpinIn = sharedPref.getInt("arrivedSpinIn", 99);
 
-        //region Log.v(TAG, "getCrowdSpinIn= " + getCrowdSpinIn);
-        //Log.v(TAG, "getCautionSpinIn= " + getCautionSpinIn);
-        //Log.v(TAG, "getMessageSpinIn= " + getMessageSpinIn);
-        //endregionLog.v(TAG, "getArrivedSpinIn= " + getArrivedSpinIn);
-
         //get radio button choices
         int getTouchLocationIn = sharedPref.getInt("touchLocationIn", 99);
         int getTouchMessageIn = sharedPref.getInt("touchMessageIn", 99);
         int getTouchNotesIn = sharedPref.getInt("touchNotesIn", 99);
 
-        //regionLog.v(TAG, "getTouchLocationIndex= " + getTouchLocationIn);
-        //Log.v(TAG, "getTouchMessageIndex= " + getTouchMessageIn);
-        //endregionLog.v(TAG, "getTouchNotesIndex= " + getTouchNotesIn);
 
         //region --assigning spinners--
         //assign spinner appropriate position - crowd
@@ -625,7 +485,9 @@ public class SettingsActivity extends AppCompatActivity {
         //Log.v(TAG, "done");
     }
 
-    //method to vibrate phone
+    /**
+     * method to vibrate phone when haptic feedback is needed, added suppression because everything was imported properly but error persisted
+     */
     @SuppressLint("MissingPermission")
     public void vibratePhone(){
 
@@ -641,6 +503,9 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * method to produce a notification as a haptic feedback
+     */
     public void sendPushNotification(){
         Log.v(TAG, "inside push notification method");
 
@@ -651,9 +516,9 @@ public class SettingsActivity extends AppCompatActivity {
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(SettingsActivity.this, "my notification");
         nBuilder.setContentTitle("C-4-ME");
         nBuilder.setContentText("C-4-ME will send a notification for Alert");
-        nBuilder.setSmallIcon(R.drawable.ic_launcher_background); //this is the icon we should add to drawable file
+        //nBuilder.setSmallIcon(R.drawable.ic_launcher_background); //this is the icon we would add to drawable file when we create our own icon
         //nBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);
-        nBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        nBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
         nBuilder.setAutoCancel(true);
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(SettingsActivity.this);
