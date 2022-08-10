@@ -4,19 +4,9 @@ This project aim to create the mobile application for our MobleHCI 2022 project.
 
 ## Features
 
-### Built With
+Notes, Maps, Connectivity, and Settings.
 
-* [Android Studio][android-studio]
-* [Java][java]
-
-## Getting Started
-### Installation & Setup
-
-### Run
-
-
-## Demo video
-
+Built With : [Android Studio][android-studio] & [Java][java]
 
 ## License
 
@@ -28,14 +18,11 @@ Distributed under the MIT License. See `LICENSE.txt` for more information
 * Happy Ta (lam.happy.ta@gmail.com)
 * Sarah Mahmoud (mahmouds@wit.edu)
 * Aimane Mahtar (mahtara@wit.edu)
+* Owen Moreau (moreauo@wit.edu)
 
 
 ## Acknowledgements
-
-* []()
-* []()
-* []()
-
+We appreciate Professor Chen-Hsiang (Jones) Yu’s encouragement to join such an inspiring and meaningful activity. As a team of three undergraduate students, we appreciate all the opportunities to learn, grow and contribute our knowledge and skills to the MobileHCI community.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [android-studio]: https://developer.android.com/studio
