@@ -94,23 +94,27 @@ public class ConnectivityActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
+                //checks if startScanPermission allowed permission
                 boolean check = startScanPermission();
                 if (check) {
                     startSearch();
-                    scan.setEnabled(false);
-                    connect.setEnabled(true);
-                    Toast.makeText(ConnectivityActivity.this, "Device Found", Toast.LENGTH_SHORT).show();
 
+                    if (DInfo.deviceBtMac != null || DInfo.deviceBtMac != "" ) {
+                        scan.setEnabled(false);
+                        connect.setEnabled(true);
+                        Toast.makeText(ConnectivityActivity.this, "Device Found", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ConnectivityActivity.this, "Scanning Failed/Attempt again", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(ConnectivityActivity.this, "Scanning Failed...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ConnectivityActivity.this, "Scanning Failed/Attempt again", Toast.LENGTH_SHORT).show();
                 }
 
             }
 
         });
 
-        connect = (Button) (findViewById(R.id.btn_connect));
+        // when clicked, connection to eyewear begins
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,7 +127,7 @@ public class ConnectivityActivity extends AppCompatActivity {
                 {
                     e.printStackTrace();
                 }
-
+                // checks if connected, if not, shows user so
                 if (AudioBluetoothApi.getInstance().isConnected(DInfo.getDeviceBtMac())) {
                     connect.setText("Connected");
                     connect.setEnabled(false);
@@ -138,7 +142,7 @@ public class ConnectivityActivity extends AppCompatActivity {
 
     }
 
-
+    // API Call to connect
     private void connect() {
         AudioBluetoothApi.getInstance().connect(DInfo.deviceBtMac, state -> {
             BluetoothDevice device = BluetoothManager.getInstance().getBtDevice(DInfo.deviceBtMac);
@@ -147,6 +151,8 @@ public class ConnectivityActivity extends AppCompatActivity {
 
     }
 
+
+    // API handler for connection state (this is where we would register commands and change UI to reflect sensor data)
     public void onConnectStateChanged(BluetoothDevice device, int state) {
         String stateInfo;
         switch (state) {
@@ -180,6 +186,7 @@ public class ConnectivityActivity extends AppCompatActivity {
     }
 
 
+    // UI changer done when eyewear is registered to listen and passing data
     private void changeUI(SensorData data) {
 
         String batteryPercent = data.getBattPercent() + "";
