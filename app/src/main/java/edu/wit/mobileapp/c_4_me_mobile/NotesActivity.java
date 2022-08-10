@@ -74,5 +74,20 @@ public class NotesActivity extends AppCompatActivity {
                 startActivity(notesIntent);
             }
         });//end of newNoteBtn listener
+
+        Button goBackBtn = (Button) findViewById(R.id.back_button);
+
+        // Go Back button listener
+        goBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("myApp", "Go Back Button Clicked");
+
+                // intent for activity switch
+                Intent goBackIntent = new Intent();
+                goBackIntent.setClass(NotesActivity.this, MainActivity.class);
+                startActivity(goBackIntent);
+            }
+        });//end of goBackBtn listener
     }
 }
